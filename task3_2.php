@@ -30,7 +30,7 @@
     function powerCalc(int $base, int $exponent=2)
     {
         $total=1;
-        for($i= $exponent; $i>1; $i--){
+        for($i= $exponent; $i>=1; $i--){
             
             $total*=$base;
         }
