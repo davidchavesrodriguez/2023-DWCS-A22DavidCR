@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);?>
+<?php
+
+declare(strict_types=1); ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -26,15 +28,15 @@
     Write the code that invokes this function and shows the 
     result on a web page. */
 
-    
-    function powerCalc(int $base, int $exponent=2)
+
+    function powerCalc(int $base, int $exponent = 2)
     {
-        $total=1;
-        for($i= $exponent; $i>=1; $i--){
-            
-            $total*=$base;
+        $total = 1;
+        for ($i = $exponent; $i >= 1; $i--) {
+
+            $total *= $base;
         }
-        return $total;
+        return "The total value is " . $total;
     }
     echo powerCalc(4, 3);
     ?>
