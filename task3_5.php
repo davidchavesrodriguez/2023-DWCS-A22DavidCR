@@ -16,7 +16,7 @@
     $pattern = "/Good/i";
     function findString(String $str, String $pattern)
     {
-        $found = (preg_match($pattern, $str) === 1);
+        $found = (preg_match($pattern, $str));
         return var_export($found);
     }
     echo findString($str, $pattern);
