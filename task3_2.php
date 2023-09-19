@@ -28,7 +28,6 @@ declare(strict_types=1); ?>
     Write the code that invokes this function and shows the 
     result on a web page. */
 
-
     function powerCalc(int $base, int $exponent = 2)
     {
         $total = 1;
