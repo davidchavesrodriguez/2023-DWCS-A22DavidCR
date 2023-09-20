@@ -54,6 +54,8 @@ We need to store the following information in a multidimensional array:
         echo "</ul></ul>";
     }
 
+
+    echo "Hola, Isamel";
     ?>
 </body>
 
