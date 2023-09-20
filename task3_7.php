@@ -40,22 +40,22 @@ We need to store the following information in a multidimensional array:
 2.- Using the foreach instruction and HTML lists, print all the stored information so that it is shown in the example above.
  */
 
-    $arrays = array("John", "john@demo.com", "www.john.com", 22, "pass");
-    array("Anna", "anna@demo.com", "www.anna.com", 24, "pass");
-    array("Peter", "peter@demo.com", "www.peter.com", 42, "pass");
-    array("Max", "max@demo.com", "www.max.com", 33, "pass");
+    $arrays = array(
+        array("John", "john@demo.com", "www.john.com", 22, "pass"),
+        array("Anna", "anna@demo.com", "www.anna.com", 24, "pass"),
+        array("Peter", "peter@demo.com", "www.peter.com", 42, "pass"),
+        array("Max", "max@demo.com", "www.max.com", 33, "pass")
+    );
 
     foreach ($arrays as $element) {
-        echo "<ul><li>$arrays[0]</li><ul>";
+        echo "<ul><li>$element[0]</li>";
         echo "<ul>";
-        echo "<li>$arrays[1]</li>";
-        echo "<li>$arrays[2]</li>";
-        echo "<li>$arrays[3]</li>";
+        echo "<li>email: $element[1]</li>";
+        echo "<li>web: $element[2]</li>";
+        echo "<li>age: $element[3]</li>";
+        echo "<li>password: $element[4]</li>";
         echo "</ul></ul>";
     }
-
-
-    echo "Hola, Isamel";
     ?>
 </body>
 
