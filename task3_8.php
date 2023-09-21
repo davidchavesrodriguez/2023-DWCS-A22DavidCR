@@ -57,7 +57,7 @@
 
 
     //10.- Crear una copia del array con el nombre "micopia" con los elementos 3 al 5 (utilizar funciones de array).
-    $micopia = array_slice($arrayHeroes, 3, 5);
+    $micopia = array_slice($arrayHeroes, 3, 3);
 
 
     //11.- Añadir el elemento "pera" al final del array (utilizar funciones de array).

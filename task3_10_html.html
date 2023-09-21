@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+
+  <body>
+    <style>
+      .role {
+        display: block;
+      }
+    </style>
+
+    <h1>Novell Services Login</h1>
+    <form action="task3_10_php.php" method="post">
+      <label for="username">Username: </label>
+      <input type="text" name="username" /><br />
+      <label for="password">Password: </label>
+      <input type="password" name="password" />
+      <br />
+
+      <label for="city">City of employment: </label>
+      <input type="text" name="city" /><br />
+      <label for="server">Web server</label>
+      <select name="server" id="server">
+        <option value="northAmerica">North America</option>
+        <option value="europe">Europe</option>
+        <option value="asia">Asia</option>
+        <option value="southAmerica">South America</option>
+      </select>
+      <br />
+      <br />
+
+      <label for="role">Please, specify your role: </label> <br />
+      <label for="admin">Admin</label>
+      <input type="radio" name="role" id="admin" value="admin" /> <br />
+      <label for="engineer">Engineer</label>
+      <input type="radio" name="role" id="engineer" value="engineer" /> <br />
+      <label for="manager">Manager</label>
+      <input type="radio" name="role" id="manager" value="manager" /> <br />
+      <label for="guest">Guest</label>
+      <input type="radio" name="role" id="guest" value="guest" checked /> <br />
+      <br />
+      <br />
+
+      <label for="checkbox">Which languages do you master?</label> <br />
+      <input type="checkbox" name="language[]" id="java" value="java" />
+      <label for="java">Java</label> <br />
+      <input type="checkbox" name="language[]" id="python" value="python" />
+      <label for="python">Python</label> <br />
+      <input
+        type="checkbox"
+        name="language[]"
+        id="rianxeiro"
+        value="rianxeiro"
+      />
+      <label for="rianxeiro">Rianxeiro</label> <br />
+      <input type="submit" />
+      <br />
+      <br />
+    </form>
+  </body>
+</html>
