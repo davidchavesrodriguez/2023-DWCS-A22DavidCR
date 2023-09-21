@@ -1,20 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE HTML>
+<html>
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Document</title>
+  <style>
+    .error {
+      color: #FF0000;
+    }
+  </style>
 </head>
 
 <body>
-
-  <style>
-    .error {
-      color: red;
-    }
-  </style>
-
   <?php
   function test_input($data)
   {
@@ -24,73 +19,52 @@
     return $data;
   }
   if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $name = $nameErr = "";
-    $name = test_input(($_POST["username"]));
+    $name = $email = $nameErr = "";
+    $name = test_input(($_POST["name"]));
+    // check if name only contains letters and whitespace
     if (!preg_match("/^[a-zA-Z-' ]*$/", $name)) {
-      $nameErr = "Only letters and white space, please";
+      $nameErr = "Only letters and white space allowed";
       $name = "";
     }
-  };
-  echo "Welcome, ", $_POST["username"];
-  echo "<br>";
-
-  echo "Your role is: ", $_POST["role"];
-  echo "<br>";
-
-  echo "You speak: ";
-  if (isset($_POST["language"])) {
-    echo implode(", ", $_POST["language"]);
-  } else {
-    echo "No languages selected.";
-  };
-  echo "<br>";
+    $email = test_input(($_POST["email"]));
   ?>
-
-
-  <h1>Novell Services Login</h1>
-  <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
-    <label for="username">Username: </label>
-    <input type="text" name="username" />
-    <span class="error">* <?php echo $nameErr; ?> </span><br />
-    <label for="password">Password: </label>
-    <input type="password" name="password" />
-    <br />
-
-    <label for="city">City of employment: </label>
-    <input type="text" name="city" /><br />
-    <label for="server">Web server</label>
-    <select name="server" id="server">
-      <option value="northAmerica">North America</option>
-      <option value="europe">Europe</option>
-      <option value="asia">Asia</option>
-      <option value="southAmerica">South America</option>
-    </select>
-    <br />
-    <br />
-
-    <label for="role">Please, specify your role: </label> <br />
-    <label for="admin">Admin</label>
-    <input type="radio" name="role" id="admin" value="admin" /> <br />
-    <label for="engineer">Engineer</label>
-    <input type="radio" name="role" id="engineer" value="engineer" /> <br />
-    <label for="manager">Manager</label>
-    <input type="radio" name="role" id="manager" value="manager" /> <br />
-    <label for="guest">Guest</label>
-    <input type="radio" name="role" id="guest" value="guest" checked /> <br />
-    <br />
-    <br />
-
-    <label for="checkbox">Which languages do you master?</label> <br />
-    <input type="checkbox" name="language[]" id="java" value="java" />
-    <label for="java">Java</label> <br />
-    <input type="checkbox" name="language[]" id="python" value="python" />
-    <label for="python">Python</label> <br />
-    <input type="checkbox" name="language[]" id="rianxeiro" value="rianxeiro" />
-    <label for="rianxeiro">Rianxeiro</label> <br />
-    <input type="submit" />
-    <br />
-    <br />
+    Welcome <?php echo $name; ?><br><br>
+    Your email address is: <?php echo $email; ?><br><br>
+    Your Job is: <?php echo $_POST["job"]; ?><br><br>
+    Your Category is: <?php echo $_POST["categ"]; ?><br><br>
+    You work
+  <?php
+    if (!empty($_POST["modo1"]))
+      echo $_POST["modo1"] . ", ";
+    if (!empty($_POST["modo2"]))
+      echo $_POST["modo2"];
+  } //if
+  ?>
+  <h2>PHP Form Validation Example</h2>
+  <p><span class="error">* required field</span></p>
+  <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+    <label for="idName">Name: </label>
+    <input type="text" id="idName" name="name" required>
+    <span class="error">*<?php echo $nameErr; ?></span>
+    <br><br>
+    <label for="idEMail">Email: </label>
+    <input type="text" id="idEMail" name="email" required>
+    <span class="error">*</span><br><br>
+    <label for="idJob">Job: </label>
+    <select name="job" id="idJob">
+      <option value="1">Programmer</option>
+      <option value="2" selected>Designer</option>
+      <option value="3">Manager</option>
+    </select><br><br>
+    <label for="idCat">Category: </label>
+    <input type="radio" id="idCat" name="categ" value="Junior" checked>Junior
+    <input type="radio" id="idCat1" name="categ" value="Senior">Senior <br><br>
+    <label for="idModo">Working mode: </label>
+    <input type="checkbox" id="idModo" name="modo1" value="Office">Office
+    <input type="checkbox" id="idModo2" name="modo2" value="Remote">Remote<br><br>
+    <input type="submit">
   </form>
+
 </body>
 
 </html>
