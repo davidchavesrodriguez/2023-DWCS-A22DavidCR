@@ -1,0 +1,10 @@
+1. Indicate the PHP function that shows all information, including the path to the file php.ini.
+<?php phpinfo(); ?>
+
+
+2. Indicate what we need to check in the php.ini file so that our forms can upload files.
+file_uploads: Should be on
+upload_max_filesize: Specify the maximun size
+post_max_size: Should be at least the same size as the last option
+upload_tmp_dir: To set the temporary directory where the temporary files will be stored
+max_execution_time: If files are too big you can consider increase this value
