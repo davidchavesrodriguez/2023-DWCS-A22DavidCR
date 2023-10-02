@@ -80,9 +80,31 @@ The DNI check page must ask for your DNI and check if it is correct using a func
         </ul>
     </div>
 
-    <!-- FORM -->
+    <?php
+    $load = "";
+    switch ($_GET["load"]) {
+        case 'home':
+            home();
+            break;
+        case 'form':
+            form();
+            break;
+        case 'dniCheck':
+            dniCheck();
+            break;
+        default:
+            break;
+    }
+    ?>
+
+
+    <?php
+    function form()
+    {
+        // FORM
+        echo '
     <h1>Complete your CV</h1>
-    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="GET">
+    <form action="' . htmlspecialchars($_SERVER["PHP_SELF"]) . '" method="GET">
         <label for="name">Name:</label>
         <input type="text" name="name">
         <br>
@@ -98,53 +120,131 @@ The DNI check page must ask for your DNI and check if it is correct using a func
         <input type="checkbox" name="subscribe" id="subscribe">
         <label for="subscribe">Subscribe to news</label>
         <br>
+        <input hidden type="text" name="load" value="form">
         <input type="submit" name="submit" id="submit" value="Save changes">
         <input type="reset" name="reset" id="reset" value="Reset data">
-    </form>
-
-    <!-- HOME -->
+    </form>';
+    }
+    ?>
     <?php
-  // Read php.ini values
-  $latitude = ini_get("date.default_latitude");
-  $longitude = ini_get("date.default_longitude");
-  /*   $sunrise = ini_get("date.sunrise_zenith");
-  $sunset = ini_get("date.sunset_zenith"); */
-  echo "Santiago's latitude is: ";
-  echo $latitude;
-  echo "<br>";
-  echo "Santiago's longitude is: ";
-  echo $longitude;
-  echo "<br>";
-  // Set the timezone to Santiago de Compostela or your desired timezone
-  date_default_timezone_set('Europe/Madrid');
-  // Get today's date
-  $currentDate = date('Y-m-d');
-  // Calculate sunrise and sunset times (DEPRECATED)
-  $sunrise = date_sunrise(strtotime($currentDate), SUNFUNCS_RET_STRING, $latitude, $longitude, ini_get('date.sunrise_zenith'));
-  $sunset = date_sunset(strtotime($currentDate), SUNFUNCS_RET_STRING, $latitude, $longitude, ini_get('date.sunset_zenith'));
 
-  // Display the information
-  echo "Today's Date: $currentDate<br>";
-  echo "Sunrise Time in Santiago de Compostela: $sunrise<br>";
-  echo "Sunset Time in Santiago de Compostela: $sunset<br>";
+    if (isset($_FILES["photo"]) && $_FILES["photo"]["error"] == UPLOAD_ERR_OK) {
+        $photo = $_FILES["photo"];
 
-  /*   echo "Today's sunrise happens at: ";
-  echo $sunrise;
-  echo "<br>";
-  echo "Today's sunset happens at: ";
-  echo $sunset; */
-  ?>
+        // Verificar que el archivo es una imagen
+        $allowedTypes = ['image/jpeg', 'image/png', 'image/gif']; // Tipos de imagen permitidos
+        if (in_array($photo['type'], $allowedTypes)) {
+            // Limitar el tamaño del archivo a, por ejemplo, 2MB
+            $maxFileSize = 2 * 1024 * 1024; // 2MB en bytes
+            if ($photo['size'] <= $maxFileSize) {
+                $photo_name = $photo["name"];
+                move_uploaded_file($photo["tmp_name"], "project1/images/$photo_name");
+                echo "<br>";
+                echo "Imaxe cargada: <img src='project1/images/$photo_name' alt='Imagen cargada'>";
+            } else {
+                echo "El tamaño del archivo es demasiado grande. Debe ser menor o igual a 2MB.";
+            }
+        } else {
+            echo "El archivo no es una imagen válido. Los formatos permitidos son JPEG, PNG o GIF.";
+        }
+    }
+    ?>
 
-    <!-- DNI -->
     <?php
-  function dniCheck()
-  {
-  }
-  ?>
-    <label for="dniCheck">Submit your DNI:</label>
-    <input type="text" name="surname">
-    <input type="submit" name="submitId" id="submitId">
+    function home()
+    {
+        // Read php.ini values
+        $latitude = ini_get("date.default_latitude");
+        $longitude = ini_get("date.default_longitude");
 
+        echo "Santiago's latitude is: ";
+        echo $latitude;
+        echo "<br>";
+        echo "Santiago's longitude is: ";
+        echo $longitude;
+        echo "<br>";
+
+        // Set the timezone to Santiago de Compostela or your desired timezone
+        date_default_timezone_set('Europe/Madrid');
+
+        // Get today's date
+        $currentDate = date('Y-m-d');
+
+        // Calculate sunrise and sunset times (DEPRECATED)
+        $sunrise = date_sunrise(
+            strtotime($currentDate),
+            SUNFUNCS_RET_STRING,
+            $latitude,
+            $longitude,
+            ini_get('date.sunrise_zenith')
+        );
+
+        $sunset = date_sunset(
+            strtotime($currentDate),
+            SUNFUNCS_RET_STRING,
+            $latitude,
+            $longitude,
+            ini_get('date.sunset_zenith')
+        );
+
+        // Display the information
+        echo "Today's Date: $currentDate<br>";
+        echo "Sunrise Time in Santiago de Compostela: $sunrise<br>";
+        echo "Sunset Time in Santiago de Compostela: $sunset<br>";
+    }
+    ?>
+
+
+    <?php
+    function validarDNI($dni)
+    {
+        // Elimina espacios en blanco y convierte a mayúsculas
+        $dni = strtoupper(trim($dni));
+
+        // Verifica que el DNI tenga un formato válido
+        if (preg_match('/^[0-9]{8}[A-Z]$/', $dni)) {
+            $letras = "TRWAGMYFPDXBNJZSQVHLCKE";
+            $numeroDNI = substr($dni, 0, 8);
+            $letraCalculada = $letras[$numeroDNI % 23];
+            $letraDNI = $dni[8];
+
+            // Compara la letra calculada con la letra del DNI
+            if ($letraCalculada === $letraDNI) {
+                return true; // DNI válido
+            }
+        }
+
+        return false; // DNI no válido
+    }
+    ?>
+
+    <?php
+    function dniCheck()
+    {
+        echo "
+        <!-- DNI -->
+    <form method='POST'>
+        <label for='dniCheck'>Submit your DNI:</label>
+        <input type='text' name='dni'>
+        <input type='submit' name='submitId' id='submitId'>
+    </form>";
+        // Verificar si se ha enviado el formulario
+        if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submitId"])) {
+            // Obtener el DNI enviado en el formulario
+            $dni = isset($_POST["dni"]) ? $_POST["dni"] : "";
+
+            // Llamar a la función de validación de DNI
+            $esValido = validarDNI($dni);
+
+            // Mostrar el resultado de la validación
+            if ($esValido) {
+                echo "El DNI $dni es válido.";
+            } else {
+                echo "El DNI $dni no es válido.";
+            }
+        }
+    }
+    ?>
 </body>
 
 </html>
