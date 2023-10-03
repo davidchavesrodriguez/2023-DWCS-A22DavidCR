@@ -132,7 +132,7 @@ The DNI check page must ask for your DNI and check if it is correct using a func
         $photo = $_FILES["photo"];
 
         // Verify images
-        $allowedTypes = ['image/jpeg', 'image/png', 'image/gif']; // Tipos de imagen permitidos
+        $allowedTypes = ['image/jpeg', 'image/png', 'image/gif']; // Image types
         if (in_array($photo['type'], $allowedTypes)) {
             // Limit size
             $maxFileSize = 2 * 1024 * 1024; // 2MB
@@ -140,12 +140,12 @@ The DNI check page must ask for your DNI and check if it is correct using a func
                 $photo_name = $photo["name"];
                 move_uploaded_file($photo["tmp_name"], "project1/images/$photo_name");
                 echo "<br>";
-                echo "Imaxe cargada: <img src='project1/images/$photo_name' alt='Imagen cargada'>";
+                echo "Image: <img src='project1/images/$photo_name' alt='Image'>";
             } else {
-                echo "El tamaño del archivo es demasiado grande. Debe ser menor o igual a 2MB.";
+                echo "Size is too big.";
             }
         } else {
-            echo "El archivo no es una imagen válido. Los formatos permitidos son JPEG, PNG o GIF.";
+            echo "That is not a valid format.";
         }
     }
     ?>
@@ -236,9 +236,9 @@ The DNI check page must ask for your DNI and check if it is correct using a func
             $esValido = validarDNI($dni);
 
             if ($esValido) {
-                echo "El DNI $dni es válido.";
+                echo "DNI $dni is valid.";
             } else {
-                echo "El DNI $dni no es válido.";
+                echo "DNI $dni is NOT valid.";
             }
         }
     }
