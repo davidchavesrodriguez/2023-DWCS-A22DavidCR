@@ -146,10 +146,9 @@ The DNI check page must ask for your DNI and check if it is correct using a func
         $target_dir = "images/";
 
         // Verify images
-        $allowedTypes = ['image/jpeg', 'image/png', 'image/gif']; // Image types
+        $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
         if (in_array($photo['type'], $allowedTypes)) {
-            // Limit size
-            $maxFileSize = 2 * 1024 * 1024; // 2MB
+            $maxFileSize = 2 * 1024 * 1024;
             if ($photo['size'] <= $maxFileSize) {
                 $photo_name = $photo["name"];
                 $target_file = $target_dir . $photo_name;
@@ -178,11 +177,8 @@ The DNI check page must ask for your DNI and check if it is correct using a func
         echo "Santiago's longitude is: ";
         echo $longitude;
         echo "<br>";
-
-        // Set the timezone to Santiago de Compostela or your desired timezone
         date_default_timezone_set('Europe/Madrid');
 
-        // Get today's date
         $currentDate = date('d-m-Y');
 
         // Calculate sunrise and sunset times (DEPRECATED)
@@ -204,7 +200,6 @@ The DNI check page must ask for your DNI and check if it is correct using a func
             5
         );
 
-        // Display the information
         echo "Today's Date: $currentDate<br>";
         echo "Sunrise Time in Santiago de Compostela: $sunrise<br>";
         echo "Sunset Time in Santiago de Compostela: $sunset<br>";
@@ -215,23 +210,20 @@ The DNI check page must ask for your DNI and check if it is correct using a func
     <?php
     function validarDNI($dni)
     {
-        // Trim spaces and convert to CAPS
         $dni = strtoupper(trim($dni));
 
-        // Verify DNI
         if (preg_match('/^[0-9]{8}[A-Z]$/', $dni)) {
             $letras = "TRWAGMYFPDXBNJZSQVHLCKE";
             $numeroDNI = substr($dni, 0, 8);
             $letraCalculada = $letras[$numeroDNI % 23];
             $letraDNI = $dni[8];
 
-            // Compare DNI letter
             if ($letraCalculada === $letraDNI) {
-                return true; // Valid
+                return true;
             }
         }
 
-        return false; // Not valid
+        return false;
     }
     ?>
 
@@ -245,9 +237,7 @@ The DNI check page must ask for your DNI and check if it is correct using a func
         <input type='text' name='dni'>
         <input type='submit' name='submitId' id='submitId'>
     </form>";
-        // Verify form
         if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submitId"])) {
-            // Get DNI
             $dni = isset($_POST["dni"]) ? $_POST["dni"] : "";
 
             $esValido = validarDNI($dni);
