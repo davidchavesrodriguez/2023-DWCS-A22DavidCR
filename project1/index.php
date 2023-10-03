@@ -155,11 +155,12 @@ The DNI check page must ask for your DNI and check if it is correct using a func
                 $target_file = $target_dir . $photo_name;
                 move_uploaded_file($photo["tmp_name"], $target_file);
                 echo "<br>";
-                echo "Image: <img src='images/$photo_name' alt='Image'>";
+                echo "Here is your image: <br> <img src='images/$photo_name' alt='Image' width='333px'>";
             } else {
                 echo "Size is too big.";
             }
         } else {
+            echo "<br>";
             echo "That is not a valid format.";
         }
     }
