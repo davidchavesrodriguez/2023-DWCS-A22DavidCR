@@ -3,38 +3,38 @@
 
 <head>
     <style>
-        ul {
-            list-style-type: none;
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-            background-color: #333;
-        }
+    ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background-color: #333;
+    }
 
-        li {
-            float: left;
-            border-right: 1px solid #bbb;
-        }
+    li {
+        float: left;
+        border-right: 1px solid #bbb;
+    }
 
-        li:last-child {
-            border-right: none;
-        }
+    li:last-child {
+        border-right: none;
+    }
 
-        li a {
-            display: block;
-            color: white;
-            text-align: center;
-            padding: 14px 16px;
-            text-decoration: none;
-        }
+    li a {
+        display: block;
+        color: white;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+    }
 
-        li a:hover:not(.active) {
-            background-color: #111;
-        }
+    li a:hover:not(.active) {
+        background-color: #111;
+    }
 
-        .active {
-            background-color: #04aa6d;
-        }
+    .active {
+        background-color: #04aa6d;
+    }
     </style>
 </head>
 <!-- All the project must be written in English.
@@ -104,7 +104,7 @@ The DNI check page must ask for your DNI and check if it is correct using a func
         // FORM
         echo '
     <h1>Complete your CV</h1>
-    <form action="' . htmlspecialchars($_SERVER["PHP_SELF"]) . '" method="GET">
+    <form action="' . htmlspecialchars($_SERVER["PHP_SELF"]) . '" method="POST" enctype="multipart/form-data">
         <label for="name">Name:</label>
         <input type="text" name="name">
         <br>
@@ -126,12 +126,14 @@ The DNI check page must ask for your DNI and check if it is correct using a func
     </form>';
     }
 
-    if ($_SERVER["REQUEST_METHOD"] == "GET" && $_GET["submit"]) {
-        echo "Your name is ", $_GET["name"], ".";
+    if (
+        $_SERVER["REQUEST_METHOD"] == "POST" && $_POST["submit"]
+    ) {
+        echo "Your name is ", $_POST["name"], ".";
         echo "<br>";
-        echo "You wrote ", $_GET["surname"], " as surname.";
+        echo "You wrote ", $_POST["surname"], " as surname.";
         echo "<br>";
-        if ($_GET["subscribe"]) {
+        if ($_POST["subscribe"]) {
             echo "You decided to be subscribed to our newsletter!";
         } else {
             echo "You did not want to receive any news";
@@ -139,10 +141,9 @@ The DNI check page must ask for your DNI and check if it is correct using a func
     }
 
 
-
-
     if (isset($_FILES["photo"]) && $_FILES["photo"]["error"] == UPLOAD_ERR_OK) {
         $photo = $_FILES["photo"];
+        $target_dir = "images/";
 
         // Verify images
         $allowedTypes = ['image/jpeg', 'image/png', 'image/gif']; // Image types
@@ -151,9 +152,10 @@ The DNI check page must ask for your DNI and check if it is correct using a func
             $maxFileSize = 2 * 1024 * 1024; // 2MB
             if ($photo['size'] <= $maxFileSize) {
                 $photo_name = $photo["name"];
-                move_uploaded_file($photo["tmp_name"], "images/$photo_name");
+                $target_file = $target_dir . $photo_name;
+                move_uploaded_file($photo["tmp_name"], $target_file);
                 echo "<br>";
-                echo "Image: <img src='images/", $_FILES["photo"]["name"], "' alt='Image'>";
+                echo "Image: <img src='images/$photo_name' alt='Image'>";
             } else {
                 echo "Size is too big.";
             }
@@ -162,7 +164,6 @@ The DNI check page must ask for your DNI and check if it is correct using a func
         }
     }
     ?>
-
     <?php
     function home()
     {
@@ -181,15 +182,15 @@ The DNI check page must ask for your DNI and check if it is correct using a func
         date_default_timezone_set('Europe/Madrid');
 
         // Get today's date
-        $currentDate = date('Y-m-d');
+        $currentDate = date('d-m-Y');
 
         // Calculate sunrise and sunset times (DEPRECATED)
         $sunrise = date_sunrise(
-            time(),
+            strtotime($currentDate),
             SUNFUNCS_RET_STRING,
             $latitude,
             $longitude,
-            90,
+            ini_get('date.sunrise_zenith'),
             5
         );
 
@@ -251,9 +252,9 @@ The DNI check page must ask for your DNI and check if it is correct using a func
             $esValido = validarDNI($dni);
 
             if ($esValido) {
-                echo "DNI $dni is valid.";
+                echo "<p style='color:green'>DNI $dni is valid.</p>";
             } else {
-                echo "DNI $dni is NOT valid.";
+                echo "<p style='color:red'>DNI $dni is NOT valid.</p>";
             }
         }
     }
