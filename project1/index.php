@@ -3,38 +3,48 @@
 
 <head>
     <style>
-    ul {
-        list-style-type: none;
-        margin: 0;
-        padding: 0;
-        overflow: hidden;
-        background-color: #333;
-    }
+        ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #333;
+        }
 
-    li {
-        float: left;
-        border-right: 1px solid #bbb;
-    }
+        li {
+            float: left;
+            border-right: 1px solid #bbb;
+        }
 
-    li:last-child {
-        border-right: none;
-    }
+        li:last-child {
+            border-right: none;
+        }
 
-    li a {
-        display: block;
-        color: white;
-        text-align: center;
-        padding: 14px 16px;
-        text-decoration: none;
-    }
+        li a {
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
 
-    li a:hover:not(.active) {
-        background-color: #111;
-    }
+        li a:hover:not(.active) {
+            background-color: #111;
+        }
 
-    .active {
-        background-color: #04aa6d;
-    }
+        .active {
+            background-color: #04aa6d;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .bottomMargin {
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 <!-- All the project must be written in English.
@@ -93,6 +103,11 @@ The DNI check page must ask for your DNI and check if it is correct using a func
             dniCheck();
             break;
         default:
+            if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submit"])) {
+                break;
+            } else {
+                home();
+            }
             break;
     }
     ?>
@@ -103,40 +118,48 @@ The DNI check page must ask for your DNI and check if it is correct using a func
     {
         // FORM
         echo '
-    <h1>Complete your CV</h1>
+    
     <form action="' . htmlspecialchars($_SERVER["PHP_SELF"]) . '" method="POST" enctype="multipart/form-data">
+        <h1>Complete your CV</h1>
         <label for="name">Name:</label>
-        <input type="text" name="name">
-        <br>
-        <br>
+        <input type="text" name="name" class="bottomMargin">
         <label for="surname">Surname:</label>
-        <input type="text" name="surname">
-        <br>
-        <br>
+        <input type="text" name="surname" class="bottomMargin">
+
         <label for="photo">Add a photo:</label>
-        <input type="file" name="photo" id="photo">
-        <br>
-        <br>
-        <input type="checkbox" name="subscribe" id="subscribe">
+        <input type="file" name="photo" id="photo" class="bottomMargin">
         <label for="subscribe">Subscribe to news</label>
         <br>
-        
+        <input type="checkbox" name="subscribe" id="subscribe" class="bottomMargin">
         <input type="submit" name="submit" id="submit" value="Save changes">
         <input type="reset" name="reset" id="reset" value="Reset data">
     </form>';
     }
 
+    function test_input($data)
+    {
+        $data = trim($data);
+        $data = stripslashes($data);
+        $data = htmlspecialchars($data);
+        return $data;
+    }
+
     if (
-        $_SERVER["REQUEST_METHOD"] == "POST" && $_POST["submit"]
+        $_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submit"])
     ) {
-        echo "Your name is ", $_POST["name"], ".";
+        $name = $surname = $subscribe = "";
+        $name = test_input($_POST["name"]);
+        $surname = test_input($_POST["surname"]);
+        $subscribe = isset($_POST["subscribe"]);
+
+        echo "Your name is ", $name, ".";
         echo "<br>";
-        echo "You wrote ", $_POST["surname"], " as surname.";
+        echo "You wrote ", $surname, " as surname.";
         echo "<br>";
         if ($_POST["subscribe"]) {
-            echo "You decided to be subscribed to our newsletter!";
+            echo "You asked to be subscribed to our newsletter!";
         } else {
-            echo "You did not want to receive any news";
+            echo "You are not subscribed";
         }
     }
 
@@ -162,8 +185,7 @@ The DNI check page must ask for your DNI and check if it is correct using a func
             echo "<br>";
             echo "That is not a valid format.";
         }
-    }
-    ?>
+    } ?>
     <?php
     function home()
     {
@@ -171,6 +193,8 @@ The DNI check page must ask for your DNI and check if it is correct using a func
         $latitude = ini_get("date.default_latitude");
         $longitude = ini_get("date.default_longitude");
 
+        echo "<h1>Welcome to my page!</h1>";
+        echo "<h3>Here you have some info you might find useful: </h3>";
         echo "Santiago's latitude is: ";
         echo $latitude;
         echo "<br>";
@@ -229,10 +253,12 @@ The DNI check page must ask for your DNI and check if it is correct using a func
 
     <?php
     function dniCheck()
+
     {
         echo "
         <!-- DNI -->
     <form method='POST'>
+        <h1>Do you want to check your DNI?</h1>
         <label for='dniCheck'>Submit your DNI:</label>
         <input type='text' name='dni'>
         <input type='submit' name='submitId' id='submitId'>
