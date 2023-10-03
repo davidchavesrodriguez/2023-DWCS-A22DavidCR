@@ -120,13 +120,26 @@ The DNI check page must ask for your DNI and check if it is correct using a func
         <input type="checkbox" name="subscribe" id="subscribe">
         <label for="subscribe">Subscribe to news</label>
         <br>
-        <input hidden type="text" name="load" value="form">
+        
         <input type="submit" name="submit" id="submit" value="Save changes">
         <input type="reset" name="reset" id="reset" value="Reset data">
     </form>';
     }
-    ?>
-    <?php
+
+    if ($_SERVER["REQUEST_METHOD"] == "GET" && $_GET["submit"]) {
+        echo "Your name is ", $_GET["name"], ".";
+        echo "<br>";
+        echo "You wrote ", $_GET["surname"], " as surname.";
+        echo "<br>";
+        if ($_GET["subscribe"]) {
+            echo "You decided to be subscribed to our newsletter!";
+        } else {
+            echo "You did not want to receive any news";
+        }
+    }
+
+
+
 
     if (isset($_FILES["photo"]) && $_FILES["photo"]["error"] == UPLOAD_ERR_OK) {
         $photo = $_FILES["photo"];
@@ -138,9 +151,9 @@ The DNI check page must ask for your DNI and check if it is correct using a func
             $maxFileSize = 2 * 1024 * 1024; // 2MB
             if ($photo['size'] <= $maxFileSize) {
                 $photo_name = $photo["name"];
-                move_uploaded_file($photo["tmp_name"], "project1/images/$photo_name");
+                move_uploaded_file($photo["tmp_name"], "images/$photo_name");
                 echo "<br>";
-                echo "Image: <img src='project1/images/$photo_name' alt='Image'>";
+                echo "Image: <img src='images/", $_FILES["photo"]["name"], "' alt='Image'>";
             } else {
                 echo "Size is too big.";
             }
@@ -172,19 +185,21 @@ The DNI check page must ask for your DNI and check if it is correct using a func
 
         // Calculate sunrise and sunset times (DEPRECATED)
         $sunrise = date_sunrise(
-            strtotime($currentDate),
+            time(),
             SUNFUNCS_RET_STRING,
             $latitude,
             $longitude,
-            ini_get('date.sunrise_zenith')
+            90,
+            5
         );
 
         $sunset = date_sunset(
-            strtotime($currentDate),
+            time(),
             SUNFUNCS_RET_STRING,
             $latitude,
             $longitude,
-            ini_get('date.sunset_zenith')
+            90,
+            5
         );
 
         // Display the information
