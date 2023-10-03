@@ -3,38 +3,38 @@
 
 <head>
     <style>
-    ul {
-        list-style-type: none;
-        margin: 0;
-        padding: 0;
-        overflow: hidden;
-        background-color: #333;
-    }
+        ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #333;
+        }
 
-    li {
-        float: left;
-        border-right: 1px solid #bbb;
-    }
+        li {
+            float: left;
+            border-right: 1px solid #bbb;
+        }
 
-    li:last-child {
-        border-right: none;
-    }
+        li:last-child {
+            border-right: none;
+        }
 
-    li a {
-        display: block;
-        color: white;
-        text-align: center;
-        padding: 14px 16px;
-        text-decoration: none;
-    }
+        li a {
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
 
-    li a:hover:not(.active) {
-        background-color: #111;
-    }
+        li a:hover:not(.active) {
+            background-color: #111;
+        }
 
-    .active {
-        background-color: #04aa6d;
-    }
+        .active {
+            background-color: #04aa6d;
+        }
     </style>
 </head>
 <!-- All the project must be written in English.
@@ -131,11 +131,11 @@ The DNI check page must ask for your DNI and check if it is correct using a func
     if (isset($_FILES["photo"]) && $_FILES["photo"]["error"] == UPLOAD_ERR_OK) {
         $photo = $_FILES["photo"];
 
-        // Verificar que el archivo es una imagen
+        // Verify images
         $allowedTypes = ['image/jpeg', 'image/png', 'image/gif']; // Tipos de imagen permitidos
         if (in_array($photo['type'], $allowedTypes)) {
-            // Limitar el tamaño del archivo a, por ejemplo, 2MB
-            $maxFileSize = 2 * 1024 * 1024; // 2MB en bytes
+            // Limit size
+            $maxFileSize = 2 * 1024 * 1024; // 2MB
             if ($photo['size'] <= $maxFileSize) {
                 $photo_name = $photo["name"];
                 move_uploaded_file($photo["tmp_name"], "project1/images/$photo_name");
@@ -198,23 +198,23 @@ The DNI check page must ask for your DNI and check if it is correct using a func
     <?php
     function validarDNI($dni)
     {
-        // Elimina espacios en blanco y convierte a mayúsculas
+        // Trim spaces and convert to CAPS
         $dni = strtoupper(trim($dni));
 
-        // Verifica que el DNI tenga un formato válido
+        // Verify DNI
         if (preg_match('/^[0-9]{8}[A-Z]$/', $dni)) {
             $letras = "TRWAGMYFPDXBNJZSQVHLCKE";
             $numeroDNI = substr($dni, 0, 8);
             $letraCalculada = $letras[$numeroDNI % 23];
             $letraDNI = $dni[8];
 
-            // Compara la letra calculada con la letra del DNI
+            // Compare DNI letter
             if ($letraCalculada === $letraDNI) {
-                return true; // DNI válido
+                return true; // Valid
             }
         }
 
-        return false; // DNI no válido
+        return false; // Not valid
     }
     ?>
 
@@ -228,15 +228,13 @@ The DNI check page must ask for your DNI and check if it is correct using a func
         <input type='text' name='dni'>
         <input type='submit' name='submitId' id='submitId'>
     </form>";
-        // Verificar si se ha enviado el formulario
+        // Verify form
         if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submitId"])) {
-            // Obtener el DNI enviado en el formulario
+            // Get DNI
             $dni = isset($_POST["dni"]) ? $_POST["dni"] : "";
 
-            // Llamar a la función de validación de DNI
             $esValido = validarDNI($dni);
 
-            // Mostrar el resultado de la validación
             if ($esValido) {
                 echo "El DNI $dni es válido.";
             } else {
