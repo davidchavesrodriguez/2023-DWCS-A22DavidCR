@@ -3,54 +3,54 @@
 
 <head>
     <style>
-        ul {
-            list-style-type: none;
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-            background-color: #333;
-        }
+    ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background-color: #333;
+    }
 
-        li {
-            float: left;
-            border-right: 1px solid #bbb;
-        }
+    li {
+        float: left;
+        border-right: 1px solid #bbb;
+    }
 
-        li:last-child {
-            border-right: none;
-        }
+    li:last-child {
+        border-right: none;
+    }
 
-        li a {
-            display: block;
-            color: white;
-            text-align: center;
-            padding: 14px 16px;
-            text-decoration: none;
-        }
+    li a {
+        display: block;
+        color: white;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+    }
 
-        li a:hover:not(.active) {
-            background-color: #111;
-        }
+    li a:hover:not(.active) {
+        background-color: #111;
+    }
 
-        .active {
-            background-color: #04aa6d;
-        }
+    .active {
+        background-color: #04aa6d;
+    }
 
-        form {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
+    form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
 
-        .divCenter {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
+    .divCenter {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
 
-        .bottomMargin {
-            margin-bottom: 10px;
-        }
+    .bottomMargin {
+        margin-bottom: 10px;
+    }
     </style>
 </head>
 <!-- All the project must be written in English.
@@ -189,11 +189,18 @@ The DNI check page must ask for your DNI and check if it is correct using a func
         if (in_array($photo['type'], $allowedTypes)) {
             $maxFileSize = 2 * 1024 * 1024;
             if ($photo['size'] <= $maxFileSize) {
-                $photo_name = $photo["name"];
-                $target_file = $target_dir . $photo_name;
-                move_uploaded_file($photo["tmp_name"], $target_file);
-                echo "<br>";
-                echo "Here is your image: <br> <img src='images/$photo_name' alt='Image' width='333px'>";
+                // Check if image file is a actual image or fake image
+                $check = getimagesize($_FILES["photo"]["name"]);
+                if ($check !== false) {
+                    echo "File is an image - " . $check["mime"] . ".";
+                    $photo_name = $photo["name"];
+                    $target_file = $target_dir . $photo_name;
+                    move_uploaded_file($photo["tmp_name"], $target_file);
+                    echo "<br>";
+                    echo "Here is your image: <br> <img src='images/$photo_name' alt='Image' width='333px'>";
+                } else {
+                    echo "File is not an image.";
+                }
             } else {
                 echo "Size is too big.";
             }
@@ -202,6 +209,7 @@ The DNI check page must ask for your DNI and check if it is correct using a func
             echo "That is not a valid format.";
         }
     } ?>
+
     <?php
     function home()
     {
