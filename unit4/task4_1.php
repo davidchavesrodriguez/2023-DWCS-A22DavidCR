@@ -77,25 +77,35 @@ Write a program that:
             return $this;
         }
 
-        public function multiply($num1, $num2)
+        public function multiply()
         {
-            return $num1 * $num2;
+            return $this->num1 * $this->num2;
         }
 
-        public function add($num1, $num2)
+        public function add()
         {
-            return $num1 + $num2;
+            return $this->num1 + $this->num2;
         }
 
-        public function __toString($num1, $num2)
+        public function __toString()
         {
-            return __CLASS__;
+            return "<br><br>Number1: $this->num1 Number2: $this->num2";
         }
     }
     $firstCalcule = new Calculator();
     $firstCalcule->setNum1(10);
     $firstCalcule->setNum2(20);
     echo "Values of the properties: ", $firstCalcule->getNum1(), " ", $firstCalcule->getNum2();
+    echo "<br>";
+
+    /* - It creates the object secondCalcule assigning the values to the attributes at the moment of creation. Use the function toString to show the values of the attributes.  Shows the values returned by the multiply and add functions. */
+
+    $secondCalcule = new Calculator(30, 50);
+    echo $secondCalcule;
+    echo "<br>";
+    echo "Multiply: ", $secondCalcule->multiply();
+    echo "<br>";
+    echo "Add: ", $secondCalcule->add();
     ?>
 </body>
 

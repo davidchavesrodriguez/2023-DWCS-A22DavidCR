@@ -42,6 +42,12 @@
             align-items: center;
         }
 
+        .divCenter {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
         .bottomMargin {
             margin-bottom: 10px;
         }
@@ -122,9 +128,9 @@ The DNI check page must ask for your DNI and check if it is correct using a func
     <form action="' . htmlspecialchars($_SERVER["PHP_SELF"]) . '" method="POST" enctype="multipart/form-data">
         <h1>Complete your CV</h1>
         <label for="name">Name:</label>
-        <input type="text" name="name" class="bottomMargin">
+        <input type="text" name="name" class="bottomMargin" required>
         <label for="surname">Surname:</label>
-        <input type="text" name="surname" class="bottomMargin">
+        <input type="text" name="surname" class="bottomMargin" required>
 
         <label for="photo">Add a photo:</label>
         <input type="file" name="photo" id="photo" class="bottomMargin">
@@ -152,17 +158,27 @@ The DNI check page must ask for your DNI and check if it is correct using a func
         $surname = test_input($_POST["surname"]);
         $subscribe = isset($_POST["subscribe"]);
 
-        echo "Your name is ", $name, ".";
-        echo "<br>";
-        echo "You wrote ", $surname, " as surname.";
-        echo "<br>";
-        if ($_POST["subscribe"]) {
-            echo "You asked to be subscribed to our newsletter!";
+        if ((empty($_POST["name"]) || empty($_POST["surname"]))) {
+            $nameErr = "Name and surname are required";
+            echo $nameErr;
         } else {
-            echo "You are not subscribed";
+            $name = test_input($_POST["name"]);
+            if (!preg_match("/^[a-zA-Z-' ]*$/", $name) || !preg_match("/^[a-zA-Z-' ]*$/", $surname)) {
+                $nameErr = "Only letters and white space are allowed";
+                echo $nameErr;
+            } else {
+                echo "Your name is ", $name, ".";
+                echo "<br>";
+                echo "You wrote ", $surname, " as surname.";
+                echo "<br>";
+                if ($_POST["subscribe"]) {
+                    echo "You asked to be subscribed to our newsletter!";
+                } else {
+                    echo "You are not subscribed";
+                }
+            }
         }
     }
-
 
     if (isset($_FILES["photo"]) && $_FILES["photo"]["error"] == UPLOAD_ERR_OK) {
         $photo = $_FILES["photo"];
@@ -193,6 +209,7 @@ The DNI check page must ask for your DNI and check if it is correct using a func
         $latitude = ini_get("date.default_latitude");
         $longitude = ini_get("date.default_longitude");
 
+        echo "<div class='divCenter'>";
         echo "<h1>Welcome to my page!</h1>";
         echo "<h3>Here you have some info you might find useful: </h3>";
         echo "Santiago's latitude is: ";
@@ -227,6 +244,7 @@ The DNI check page must ask for your DNI and check if it is correct using a func
         echo "Today's Date: $currentDate<br>";
         echo "Sunrise Time in Santiago de Compostela: $sunrise<br>";
         echo "Sunset Time in Santiago de Compostela: $sunset<br>";
+        echo "</div>";
     }
     ?>
 
@@ -260,7 +278,7 @@ The DNI check page must ask for your DNI and check if it is correct using a func
     <form method='POST'>
         <h1>Do you want to check your DNI?</h1>
         <label for='dniCheck'>Submit your DNI:</label>
-        <input type='text' name='dni'>
+        <input type='text' name='dni' required>
         <input type='submit' name='submitId' id='submitId'>
     </form>";
         if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submitId"])) {
@@ -269,9 +287,9 @@ The DNI check page must ask for your DNI and check if it is correct using a func
             $esValido = validarDNI($dni);
 
             if ($esValido) {
-                echo "<p style='color:green'>DNI $dni is valid.</p>";
+                echo "<p style='color:green' class='divCenter'>DNI $dni is valid.</p>";
             } else {
-                echo "<p style='color:red'>DNI $dni is NOT valid.</p>";
+                echo "<p style='color:red' class='divCenter'>DNI $dni is NOT valid.</p>";
             }
         }
     }
