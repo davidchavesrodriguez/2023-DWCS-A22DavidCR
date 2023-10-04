@@ -35,6 +35,16 @@
         .active {
             background-color: #04aa6d;
         }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .bottomMargin {
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 <!-- All the project must be written in English.
@@ -93,6 +103,11 @@ The DNI check page must ask for your DNI and check if it is correct using a func
             dniCheck();
             break;
         default:
+            if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submit"])) {
+                break;
+            } else {
+                home();
+            }
             break;
     }
     ?>
@@ -103,53 +118,74 @@ The DNI check page must ask for your DNI and check if it is correct using a func
     {
         // FORM
         echo '
-    <h1>Complete your CV</h1>
-    <form action="' . htmlspecialchars($_SERVER["PHP_SELF"]) . '" method="GET">
+    
+    <form action="' . htmlspecialchars($_SERVER["PHP_SELF"]) . '" method="POST" enctype="multipart/form-data">
+        <h1>Complete your CV</h1>
         <label for="name">Name:</label>
-        <input type="text" name="name">
-        <br>
-        <br>
+        <input type="text" name="name" class="bottomMargin">
         <label for="surname">Surname:</label>
-        <input type="text" name="surname">
-        <br>
-        <br>
+        <input type="text" name="surname" class="bottomMargin">
+
         <label for="photo">Add a photo:</label>
-        <input type="file" name="photo" id="photo">
-        <br>
-        <br>
-        <input type="checkbox" name="subscribe" id="subscribe">
+        <input type="file" name="photo" id="photo" class="bottomMargin">
         <label for="subscribe">Subscribe to news</label>
         <br>
-        <input hidden type="text" name="load" value="form">
+        <input type="checkbox" name="subscribe" id="subscribe" class="bottomMargin">
         <input type="submit" name="submit" id="submit" value="Save changes">
         <input type="reset" name="reset" id="reset" value="Reset data">
     </form>';
     }
-    ?>
-    <?php
+
+    function test_input($data)
+    {
+        $data = trim($data);
+        $data = stripslashes($data);
+        $data = htmlspecialchars($data);
+        return $data;
+    }
+
+    if (
+        $_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submit"])
+    ) {
+        $name = $surname = $subscribe = "";
+        $name = test_input($_POST["name"]);
+        $surname = test_input($_POST["surname"]);
+        $subscribe = isset($_POST["subscribe"]);
+
+        echo "Your name is ", $name, ".";
+        echo "<br>";
+        echo "You wrote ", $surname, " as surname.";
+        echo "<br>";
+        if ($_POST["subscribe"]) {
+            echo "You asked to be subscribed to our newsletter!";
+        } else {
+            echo "You are not subscribed";
+        }
+    }
+
 
     if (isset($_FILES["photo"]) && $_FILES["photo"]["error"] == UPLOAD_ERR_OK) {
         $photo = $_FILES["photo"];
+        $target_dir = "images/";
 
         // Verify images
-        $allowedTypes = ['image/jpeg', 'image/png', 'image/gif']; // Image types
+        $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
         if (in_array($photo['type'], $allowedTypes)) {
-            // Limit size
-            $maxFileSize = 2 * 1024 * 1024; // 2MB
+            $maxFileSize = 2 * 1024 * 1024;
             if ($photo['size'] <= $maxFileSize) {
                 $photo_name = $photo["name"];
-                move_uploaded_file($photo["tmp_name"], "project1/images/$photo_name");
+                $target_file = $target_dir . $photo_name;
+                move_uploaded_file($photo["tmp_name"], $target_file);
                 echo "<br>";
-                echo "Image: <img src='project1/images/$photo_name' alt='Image'>";
+                echo "Here is your image: <br> <img src='images/$photo_name' alt='Image' width='333px'>";
             } else {
                 echo "Size is too big.";
             }
         } else {
+            echo "<br>";
             echo "That is not a valid format.";
         }
-    }
-    ?>
-
+    } ?>
     <?php
     function home()
     {
@@ -157,18 +193,17 @@ The DNI check page must ask for your DNI and check if it is correct using a func
         $latitude = ini_get("date.default_latitude");
         $longitude = ini_get("date.default_longitude");
 
+        echo "<h1>Welcome to my page!</h1>";
+        echo "<h3>Here you have some info you might find useful: </h3>";
         echo "Santiago's latitude is: ";
         echo $latitude;
         echo "<br>";
         echo "Santiago's longitude is: ";
         echo $longitude;
         echo "<br>";
-
-        // Set the timezone to Santiago de Compostela or your desired timezone
         date_default_timezone_set('Europe/Madrid');
 
-        // Get today's date
-        $currentDate = date('Y-m-d');
+        $currentDate = date('d-m-Y');
 
         // Calculate sunrise and sunset times (DEPRECATED)
         $sunrise = date_sunrise(
@@ -176,18 +211,19 @@ The DNI check page must ask for your DNI and check if it is correct using a func
             SUNFUNCS_RET_STRING,
             $latitude,
             $longitude,
-            ini_get('date.sunrise_zenith')
+            ini_get('date.sunrise_zenith'),
+            5
         );
 
         $sunset = date_sunset(
-            strtotime($currentDate),
+            time(),
             SUNFUNCS_RET_STRING,
             $latitude,
             $longitude,
-            ini_get('date.sunset_zenith')
+            90,
+            5
         );
 
-        // Display the information
         echo "Today's Date: $currentDate<br>";
         echo "Sunrise Time in Santiago de Compostela: $sunrise<br>";
         echo "Sunset Time in Santiago de Compostela: $sunset<br>";
@@ -198,47 +234,44 @@ The DNI check page must ask for your DNI and check if it is correct using a func
     <?php
     function validarDNI($dni)
     {
-        // Trim spaces and convert to CAPS
         $dni = strtoupper(trim($dni));
 
-        // Verify DNI
         if (preg_match('/^[0-9]{8}[A-Z]$/', $dni)) {
             $letras = "TRWAGMYFPDXBNJZSQVHLCKE";
             $numeroDNI = substr($dni, 0, 8);
             $letraCalculada = $letras[$numeroDNI % 23];
             $letraDNI = $dni[8];
 
-            // Compare DNI letter
             if ($letraCalculada === $letraDNI) {
-                return true; // Valid
+                return true;
             }
         }
 
-        return false; // Not valid
+        return false;
     }
     ?>
 
     <?php
     function dniCheck()
+
     {
         echo "
         <!-- DNI -->
     <form method='POST'>
+        <h1>Do you want to check your DNI?</h1>
         <label for='dniCheck'>Submit your DNI:</label>
         <input type='text' name='dni'>
         <input type='submit' name='submitId' id='submitId'>
     </form>";
-        // Verify form
         if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submitId"])) {
-            // Get DNI
             $dni = isset($_POST["dni"]) ? $_POST["dni"] : "";
 
             $esValido = validarDNI($dni);
 
             if ($esValido) {
-                echo "DNI $dni is valid.";
+                echo "<p style='color:green'>DNI $dni is valid.</p>";
             } else {
-                echo "DNI $dni is NOT valid.";
+                echo "<p style='color:red'>DNI $dni is NOT valid.</p>";
             }
         }
     }
