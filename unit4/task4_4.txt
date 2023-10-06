@@ -1,0 +1,98 @@
+Answer to the following questions
+Use English in your answers if possible.
+
+
+1.	What does the $this keyword inside a class refer to?
+In PHP, $this refers to the current object inside a class. It helps you access the object's data and functions.
+
+2.	What is an anonymous class used for?
+An anonymous class in PHP is a class without a name. It's used for quick, one-time tasks or to implement interfaces.
+
+3.	What is an interface used for?
+An interface in PHP is like a contract for classes. It defines what methods a class must have but not how they work.
+
+4.	Can we declare abstract methods in an interface? Justify answer.
+No, you can't have abstract methods in an interface. Interfaces define what methods must be implemented in classes, but they can't have method bodies.
+
+5.	Can a class defined as abstract be instantiated? Justify the answer.
+You can't create objects from an abstract class because it's incomplete. You need subclasses that fill in the missing parts.
+
+6.	A Trait is similar to a class, but what is it used for?
+A trait in PHP is code you can reuse in different classes, like adding functionality blocks.
+
+7.	Write an example of a class called Bus that inherits from another class called Vehicle.
+class Vehicle {
+    public $brand;
+    public $model;
+
+    public function __construct($brand, $model) {
+        $this->brand = $brand;
+        $this->model = $model;
+    }
+}
+
+class Bus extends Vehicle {
+    public $capacity;
+
+    public function __construct($brand, $model, $capacity) {
+        parent::__construct($brand, $model);
+        $this->capacity = $capacity;
+    }
+}
+
+8.	When an abstract method is defined in an abstract class, apart from declaring the method, code can be implemented. True or False and justify answer.
+False. Abstract methods in an abstract class have no code. They must be implemented in concrete subclasses.
+
+9.	Inside a static method you can use the $this keyword. Indicate whether or not it is correct, and justify your answer.
+False, $this doesn't work in static methods. Static methods operate on class-level, not instance-level data.
+
+10.	For a class to be considered abstract, all of its methods and properties must be abstract. True or false and justify answer.
+False, an abstract class must have at least one abstract method, but it can have concrete methods too.
+
+11.	If in an abstract class we define a method of type protected, in the subclasses that inherit the protected or public visibility can be used but never private. Indicate whether or not it is correct and justify your answer.
+False, you can use protected or public visibility in subclasses, but not private.
+
+12.	An abstract class can have public, private, or protected methods. It is right? Justify the answer.
+True. An abstract class in PHP can have methods with different visibilities, including public, protected, and private. 
+    - public: Methods with public visibility can be accessed from anywhere, including outside the class and in subclasses.
+    - protected: Methods with protected visibility can be accessed within the class and in its subclasses but not from outside the class.
+    - private: Methods with private visibility can only be accessed within the class itself and cannot be accessed or overridden in subclasses.
+
+13.	What is the method called that is executed when an object in memory is deleted?
+The __destruct() method is called when an object is deleted.
+
+14.	With what word do we refer to the name of a class, within the class itself?
+Within a class in PHP, you can refer to the name of the class using the special keyword 'self'.
+
+15.	When an object of a class is instantiated, what PHP method (if any) is called automatically?
+The constructor method (__construct()) is called automatically.
+
+16.	When properties are defined in a class, if the visibility is not indicated, it defaults to:
+If you don't specify visibility, it defaults to public.
+
+17.	If we want to declare a property that is accessible without the need to instantiate a class, we must declare it as:
+To make a property accessible without creating an object, declare it as static.
+
+18.	If we want a class to be included only once in the code, and if the class is not found, it will emit a "Fatal error", we will use the PHP instruction:
+To include a class file only once and get a "Fatal error" if not found, use require_once or include_once.
+
+19.	We have a class, which we want to use a certain interface. To indicate it, we will do it with the reserved word:
+To say a class follows an interface, use the keyword implements. 
+
+20.	Could a class use different interfaces in its implementation? True or false
+True
+
+21.	In an interface all declared methods must be public but never protected or private. True or false.
+True
+
+22.	To access a static method from an instantiated object of a class, we do so with the -> True or False operator.
+False
+
+23.	We have a property called lastnames of type protected on an object called $janitor. Is the following statement correct: echo $janitor->lastname ? (True or False)
+False
+
+24.	A static method can be accessible from an instance of an object. (True or False)
+True
+
+25.	A static property can be accessible from an instance of an object. (True or False)
+True
