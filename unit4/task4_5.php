@@ -11,7 +11,7 @@
     <?php
     class Notas
     {
-        protected $notas = array(2, 4, 5, 2, 1, 6, 7, 3, 4, 2);
+        private $notas = array(2, 4, 5, 2, 1, 6, 7, 3, 4, 2);
 
         public function getNotas()
         {
