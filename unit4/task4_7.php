@@ -23,11 +23,25 @@ Write the code that creates several objects of Alien and shows the value returne
     class Alien
     {
         private $name;
-        public function __construct($name = "Alien")
+        private static $numberOfAliens = 0;
+
+        public function __construct($name)
         {
             $this->name = $name;
+            self::$numberOfAliens++;
+        }
+        public static function getNumberOfAliens()
+        {
+            return self::$numberOfAliens;
         }
     }
+
+    $alien1 = new Alien("Julier");
+    $alien2 = new Alien("Rianxek");
+    $alien3 = new Alien("Isamel");
+
+    echo Alien::getNumberOfAliens();
+
     ?>
 </body>
 

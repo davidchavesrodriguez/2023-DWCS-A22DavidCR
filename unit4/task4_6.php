@@ -1,99 +1,82 @@
-<!DOCTYPE html>
-<html lang="en">
+<?php
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<!-- 
-Crea un Trait de nome CalculosCentroEstudos coas mesmas funcións cá interface do exercicio 4.5 pero coa diferencia de que estas funcións reciben como parámetro un array de números coas notas.
-
-Crea outro trait de nome MostraCalculos con dúas funcións: a función saúdo que mostra por pantalla "Benvido ao centro de cálculos" e a función mostraCalculosCentroEstudos, que recibe o número de aprobados, de suspensos e a nota media e os mostra por pantalla dándolles formato.
-
-Crea unha clase de nome NotasTrait que usa os dous traits anteriores.
-
-Escribe o código correspondente para "testear" a anterior clase.
- -->
-
-<body>
-
-    <!DOCTYPE html>
-    <html lang="en">
-
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Document</title>
-    </head>
-
-    <body>
-        <?php
-        trait CalculosCentroEstudos
-        {
-            public function numeroDeAprobados($notas)
-            {
-                $aprobados = array_filter($notas, function ($nota) {
-                    return $nota >= 5;
-                });
-                return count($aprobados);
-            }
-
-            public function numeroDeSuspensos($notas)
-            {
-                $suspensos = array_filter($notas, function ($nota) {
-                    return $nota < 5;
-                });
-                return count($suspensos);
-            }
-
-            public function notaMedia($notas)
-            {
-                $totalNotas = array_sum($notas);
-                $numNotas = count($notas);
-                return $totalNotas / $numNotas;
+// Trait CalculosCentroEstudos
+trait CalculosCentroEstudo
+{
+    public function numeroDeAprobados($notas)
+    {
+        $aprobados = 0;
+        foreach ($notas as $nota) {
+            if ($nota >= 5) {
+                $aprobados++;
             }
         }
+        return $aprobados;
+    }
 
-        trait MostraCalculos
-        {
-            public function saudo()
-            {
-                echo "Benvido ao centro de cálculos";
-                echo "</br>";
-            }
-
-            public function mostraCalculosCentroEstudos($aprobados, $suspensos, $notaMedia)
-            {
-                echo "Número de aprobados: " . $aprobados;
-                echo "</br>";
-                echo "Número de suspensos: " . $suspensos;
-                echo "</br>";
-                echo "Nota media: " . number_format($notaMedia, 2);
+    public function numeroDeSuspensos($notas)
+    {
+        $suspensos = 0;
+        foreach ($notas as $nota) {
+            if ($nota < 5) {
+                $suspensos++;
             }
         }
+        return $suspensos;
+    }
 
-        class NotasTrait
-        {
-            use CalculosCentroEstudos, MostraCalculos;
+    public function notaMedia($notas)
+    {
+        if (count($notas) == 0) {
+            return 0;
         }
 
-        $notas = [2, 4, 5, 2, 1, 6, 7, 3, 4, 2];
-        $notasTrait = new NotasTrait();
+        $sumaNotas = array_sum($notas);
+        return $sumaNotas / count($notas);
+    }
+}
 
-        $aprobados = $notasTrait->numeroDeAprobados($notas);
-        $suspensos = $notasTrait->numeroDeSuspensos($notas);
-        $notaMedia = $notasTrait->notaMedia($notas);
+// Trait MostraCalculos
+trait MostraCalculos
+{
+    public function saudo()
+    {
+        echo "Benvido ao centro de cálculos<br>";
+    }
 
-        $notasTrait->saudo();
-        $notasTrait->mostraCalculosCentroEstudos($aprobados, $suspensos, $notaMedia);
+    public function mostraCalculosCentroEstudos($aprobados, $suspensos, $notaMedia)
+    {
+        echo "Número de aprobados: $aprobados<br>";
+        echo "Número de suspensos: $suspensos<br>";
+        echo "Nota media: $notaMedia<br>";
+    }
+}
 
+// Clase NotasTrait que usa los dos traits anteriores
+class NotasTrait
+{
+    use CalculosCentroEstudo, MostraCalculos;
 
-        ?>
-    </body>
+    private $notas = [];
 
-    </html>
+    public function __construct($notas)
+    {
+        $this->notas = $notas;
+    }
 
-</body>
+    public function testear()
+    {
+        $aprobados = $this->numeroDeAprobados($this->notas);
+        $suspensos = $this->numeroDeSuspensos($this->notas);
+        $notaMedia = $this->notaMedia($this->notas);
 
-</html>
+        $this->saudo();
+        $this->mostraCalculosCentroEstudos($aprobados, $suspensos, $notaMedia);
+    }
+}
+
+// Crear un objeto de la clase NotasTrait con un array de notas
+$notasTrait = new NotasTrait([8, 5, 2, 3, 4, 5, 2, 1, 3, 4, 10]);
+
+// Testear la clase usando el método testear()
+$notasTrait->testear();

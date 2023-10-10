@@ -9,65 +9,80 @@
 
 <body>
     <?php
-    class Notas
+
+    // Clase Notas con un atributo privado que es un array de notas
+    abstract class Notas
     {
-        private $notas = array(2, 4, 5, 2, 1, 6, 7, 3, 4, 2);
+        protected $notas = [];
 
-        public function getNotas()
-        {
-            return $this->notas;
-        }
-
-        public function setNotas($notas)
+        // Constructor para inicializar las notas
+        public function __construct($notas)
         {
             $this->notas = $notas;
         }
+    }
 
+    // Interfaz CalculosCentroEstudos
+    interface CalculosCentroEstudos
+    {
+        public function numeroDeAprobados();
+        public function numeroDeSuspensos();
+        public function notaMedia();
+    }
+
+    // Clase NotasDaw que hereda de Notas e implementa CalculosCentroEstudos
+    class NotasDaw extends Notas implements CalculosCentroEstudos
+    {
+        public function numeroDeAprobados()
+        {
+            $aprobados = 0;
+            foreach ($this->notas as $nota) {
+                if ($nota >= 5) {
+                    $aprobados++;
+                }
+            }
+            return $aprobados;
+        }
+
+        public function numeroDeSuspensos()
+        {
+            $suspensos = 0;
+            foreach ($this->notas as $nota) {
+                if ($nota < 5) {
+                    $suspensos++;
+                }
+            }
+            return $suspensos;
+        }
+
+        public function notaMedia()
+        {
+            if (count($this->notas) == 0) {
+                return 0;
+            }
+
+            $sumaNotas = array_sum($this->notas);
+            return $sumaNotas / count($this->notas);
+        }
+
+        // Implementación de la función __toString()
         public function __toString()
         {
-            return implode(', ', $this->notas);
+            return "Número de aprobados: " . $this->numeroDeAprobados() . "<br>" .
+                "Número de suspensos: " . $this->numeroDeSuspensos() . "<br>" .
+                "Nota media: " . $this->notaMedia();
         }
     }
 
-    interface CalculosCentroEstudo
-    {
-        public function numeroDeAprobados($notas);
-        public function numeroDeSuspensos($notas);
-        public function notaMedia($notas);
-    }
+    // Crear un objeto de la clase NotasDaw con un array de notas
+    $notasDaw = new NotasDaw([8, 5, 2, 3, 4, 5, 2, 1, 3, 4, 10]);
 
-    class NotasDaw extends Notas implements CalculosCentroEstudo
-    {
-        public function numeroDeAprobados($notas)
-        {
-            $aprobados = array_filter($notas, function ($nota) {
-                return $nota >= 5;
-            });
-            return count($aprobados);
-        }
+    // Mostrar los resultados usando el método __toString()
+    echo $notasDaw;
 
-        public function numeroDeSuspensos($notas)
-        {
-            $suspensos = array_filter($notas, function ($nota) {
-                return $nota < 5;
-            });
-            return count($suspensos);
-        }
-
-        public function notaMedia($notas)
-        {
-            $totalNotas = array_sum($notas);
-            $numNotas = count($notas);
-            return $totalNotas / $numNotas;
-        }
-    }
-
-    $notasDaw = new NotasDaw();
-    echo "Notas: " . $notasDaw . "<br>";
-    echo "Número de aprobados: " . $notasDaw->numeroDeAprobados($notasDaw->getNotas()) . "<br>";
-    echo "Número de suspensos: " . $notasDaw->numeroDeSuspensos($notasDaw->getNotas()) . "<br>";
-    echo "Nota media: " . $notasDaw->notaMedia($notasDaw->getNotas()) . "<br>";
     ?>
+
+
 </body>
 
 </html>
