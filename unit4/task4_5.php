@@ -29,14 +29,14 @@
         }
     }
 
-    interface CalculosCentroEstudos
+    interface CalculosCentroEstudo
     {
         public function numeroDeAprobados($notas);
         public function numeroDeSuspensos($notas);
         public function notaMedia($notas);
     }
 
-    class NotasDaw extends Notas implements CalculosCentroEstudos
+    class NotasDaw extends Notas implements CalculosCentroEstudo
     {
         public function numeroDeAprobados($notas)
         {
