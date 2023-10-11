@@ -12,7 +12,7 @@
 
     <?php
 
-    class Vehicle
+    class Vehicles
     {
         protected $color;
         protected $wheels;
@@ -63,7 +63,7 @@
         }
     }
 
-    class Truck extends Vehicle
+    class Truck extends Vehicles
     {
         private $axles;
 
@@ -94,7 +94,7 @@
         }
     }
 
-    class Motorcycle extends Vehicle
+    class Motorcycle extends Vehicles
     {
         private $places;
 

@@ -1,0 +1,20 @@
+1. Indicate the differences between abstract classes and interfaces.
+Interfaces can not have properties and all their methods must be public and abstract while abstract classes don't. Also,
+classes can implement an interface while inheriting from another class.
+
+2. Indicate the differences between Traits and abstract classes.
+Only one abstract class can be inherited while traits support multiple inheritance and can be used without inherite from
+another class. Also,abstract classes imply a hierarchy of classes and subclasses.
+
+3. Indicate the differences between Traits and interfaces.
+Traits are just blocks of code injected in a class while interfaces define the list of all methods a class should
+implement so traits are used to eliminate redundance but interfaces just define how a class communicates.
+
+4. Explain the meaning of Static properties using an example.
+<?php
+class eNumber
+{
+    private static $value = 2.71828;
+}
+
+?>
