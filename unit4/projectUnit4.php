@@ -70,14 +70,15 @@
 
         public function printProperties()
         {
-            echo "Vehicle Details: ";
-            echo "<br>";
+            echo "<h1>Project Unit 4</h1>";
+
+            echo "<h3>Vehicle Details: </h3>";
             echo "Brand: ", $this->brand;
             echo "</br>";
             echo "Model: ", $this->model;
             echo "<br>";
-            echo "Owner Details: ";
-            echo "<br>";
+
+            echo "<h3>Owner Details: </h3>";
             echo "Owner´s name: ", $this->owner->getName();
             echo "<br>";
             echo "Owner´s age: ", $this->owner->getAge();
@@ -95,8 +96,8 @@
             } elseif ($divisor == 0) {
                 throw new Exception("You cannot divide by zero!");
             }
-            echo "That division gets you: ", $dividend / $divisor;
-            echo " and you still got ", $dividend % $divisor, " as remainder";
+            echo "That division gets you: <b>", $dividend / $divisor, "</b>";
+            echo " and you still got <b>", $dividend % $divisor, "</b> as remainder.";
         }
     }
 
@@ -105,13 +106,14 @@
     $vehicleSantiago->printProperties();
     echo "<br>";
     try {
+        echo "<h3>Maths: </h3>";
         Maths::division(8, 2);
         echo "<br>";
         Maths::division(8, 0);
         echo "<br>";
         Maths::division(3.4, 7.8);
     } catch (Exception $exception) {
-        echo "Error: ", $exception->getMessage();
+        echo "<span style='color:red' >Error:", $exception->getMessage(), "</span>";
     }
 
     ?>
