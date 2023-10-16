@@ -105,15 +105,25 @@
     $vehicleSantiago = new Vehicle("Ford", "Fiesta", $ownerSantiago);
     $vehicleSantiago->printProperties();
     echo "<br>";
+    echo "<h3> Maths: </h3>";
     try {
-        echo "<h3>Maths: </h3>";
         Maths::division(8, 2);
         echo "<br>";
+    } catch (Exception $exception) {
+        echo "<span style='color:red' >Error:", $exception->getMessage(), "</span>";
+    }
+    try {
         Maths::division(8, 0);
         echo "<br>";
+    } catch (Exception $exception) {
+        echo "<span style='color:red' >Error:", $exception->getMessage(), "</span>";
+        echo "<br>";
+    }
+    try {
         Maths::division(3.4, 7.8);
     } catch (Exception $exception) {
         echo "<span style='color:red' >Error:", $exception->getMessage(), "</span>";
+        echo "<br>";
     }
 
     ?>
