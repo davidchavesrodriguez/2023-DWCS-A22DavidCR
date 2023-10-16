@@ -3,7 +3,7 @@
     class Menu{
 
         private $type;
-        private Opcion $opcion;
+        private $arrayOpcion = [];
 
         public function __construct($type){
             $this->type= $type;
@@ -12,9 +12,9 @@
         public function getType() {
                 return $this->type;
         }
-        public function insertar(Opcion $opcion){
+        public function insertar($arrayOpcion){
 
-        echo "<a href='", $opcion->getEnlace() , "'>", $opcion->getTitulo(),  "</a> <br>";
+        echo "<a href='", $arrayOpcion->getEnlace() , "'><h3 style=background-color:", $arrayOpcion->getColorFondo(), ">", $arrayOpcion->getTitulo(),  "</h3></a>";
         }
     }
     class Opcion{
