@@ -1,52 +1,47 @@
 <?php 
-class Menu{
+class Menu {
     private $type;
-    private $arrayOpcion = [];
+    private $options = [];
 
-    public function __construct($type){
+    public function __construct($type) {
         $this->type = $type;
     }
 
-    public function getType() {
-        return $this->type;
+    public function addOption($title, $link, $backgroundColor) {
+        $option = new Option($title, $link, $backgroundColor);
+        $this->options[] = $option;
     }
 
-    public function insertar(Opcion $opcion){
-        $this->arrayOpcion[] = $opcion;
-    }
-
-    public function mostrarMenu(){
-        foreach ($this->arrayOpcion as $opcion) {
-            echo "<a href='", $opcion->getEnlace() , "'><h3 style=background-color:", $opcion->getColorFondo(), ">", $opcion->getTitulo(),  "</h3></a>";
+    public function display() {
+        echo '<div class="' . $this->type . '-menu">';
+        foreach ($this->options as $option) {
+            echo '<a href="' . $option->getLink() . '" style="background-color:' . $option->getBackgroundColor() . ';">' . $option->getTitle() . '</a>';
         }
+        echo '</div>';
     }
 }
 
-class Opcion{
-    private $titulo;
-    private $enlace;
-    private $colorFondo;
+class Option {
+    private $title;
+    private $link;
+    private $backgroundColor;
 
-    public function __construct($titulo, $enlace, $colorFondo){
-        $this->titulo= $titulo;
-        $this->enlace= $enlace;
-        $this->colorFondo= $colorFondo;
+    public function __construct($title, $link, $backgroundColor) {
+        $this->title = $title;
+        $this->link = $link;
+        $this->backgroundColor = $backgroundColor;
     }
 
-    public function getTitulo() {
-        return $this->titulo;
+    public function getTitle() {
+        return $this->title;
     }
 
-    public function getEnlace() {
-        return $this->enlace;
+    public function getLink() {
+        return $this->link;
     }
 
-    public function getColorFondo() {
-        return $this->colorFondo;
+    public function getBackgroundColor() {
+        return $this->backgroundColor;
     }
-
-    public function __toString()  {
-        return self::class . ": " . $this->titulo . " " . $this->enlace . " " . $this->colorFondo;
-    }   
 }
 ?>
