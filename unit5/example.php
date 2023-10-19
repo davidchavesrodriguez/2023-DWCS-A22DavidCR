@@ -9,29 +9,28 @@
     <h1 style='color:blue'>Databases ;)</h1>
 
     <?php 
-    require_once("Operations.php"); //File where classes are defined
-    try {
-        $oper= new Operations();
-        $guest= new MyGuests("Isamel", "Lens", "A33Isamel@fitness.alo");
-        $numberOfRows= $oper->addUser($guest);
-        if($numberOfRows ==1) {
-            echo "Mira cantas rows :)";
-        }else {
-            echo "Ta mal";
-        }
+require_once("Operations.php"); // Archivo donde se definen las clases
 
-    }
-    catch(PDOException $e){
-        echo "<span style='color:red' >Error:", $exception->getMessage(), "</span>";
-            echo "<br>";
-    }
-    catch(Exception $e){
-        echo "<span style='color:red' >Error:", $exception->getMessage(), "</span>";
-            echo "<br>";
-    }
-    finally{
-        $oper->closeConnection();
-    }
-    ?>
+try {
+    $oper = new Operations();
+    $myGuest = $oper->getMyGuest(11); // Cambiado el argumento de 1 a 2, si deseas obtener el invitado con ID 2, asegúrate de pasarlo correctamente.
+    echo "Amado julio";
+
+        echo "ID: " . $myGuest->getId() . "<br>";
+        echo "First Name: " . $myGuest->firstName . "<br>";
+        echo "Last Name: " . $myGuest->lastname . "<br>";
+        echo "Registration Date: " . $myGuest->reg_date . "<br>";
+
+} catch(PDOException $e){
+    echo "<span style='color:red' >Error:", $e->getMessage(), "</span>";
+    echo "<br>";
+} catch(Exception $e){
+    echo "<span style='color:red' >Error:", $e->getMessage(), "</span>";
+    echo "<br>";
+} finally {
+    $conn= null; // Cambiado '$conn = null' a '$oper->closeConnection()' para cerrar la conexión correctamente.
+}
+?>
+
 </body>
 </html>

@@ -1,7 +1,7 @@
 <?php 
+error_reporting(-1);
 
-
-class MyGuests{
+class myGuests{
 private $id;
 private $firstName;
 private $lastName;
@@ -77,5 +77,3 @@ $this->reg_date = $reg_date;
 return $this;
 }
 }
-
-?>
