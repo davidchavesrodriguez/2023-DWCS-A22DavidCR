@@ -111,46 +111,48 @@ values (?, ?, ?, ?)";
         }
     }
 
-    // public function getMyGuest($id){
-    //     $sqlString = "SELECT id, firstname, lastname, reg_date FROM MyGuests WHERE id=?";
-        
-    //     $query = $this->conn->prepare($sqlString);
-        
-    //     $query->execute([$id]);
-        
-    //     $myGuest = $query->fetchObject("myGuests");
-
-    //     return $myGuest;
-    // }
-
     public function getMyGuest($id)
     {
-        $sqlString = "SELECT * FROM MyGuests WHERE id=?";
+        $sqlString = "SELECT id, firstname, lastname, email, reg_date FROM MyGuests WHERE id=?";
 
         $query = $this->conn->prepare($sqlString);
 
         $query->execute([$id]);
 
-        $table = $myGuest = $query->fetch();
-        $myGuest = new myGuests("", "", "");
-        $myGuest->setId($table["id"]);
-        $myGuest->setFirstname($table["firstname"]);
-        $myGuest->setLastname($table["lastname"]);
-        $myGuest->setEmail($table["email"]);
-        $myGuest->setRegdate($table["reg_date"]);
+        $myGuest = $query->fetchObject('MyGuests');
         return $myGuest;
     }
+
+    // public function getMyGuest($id){
+    // $sqlString = "SELECT * FROM MyGuests WHERE id=?;";
+
+    // $query = $this->conn->prepare($sqlString);
+
+    // $query->execute([$id]);
+
+    // $table = $myGuest = $query->fetchObject();
+    // $myGuest = new MyGuests();
+    // $myGuest->setId($table["id"]);
+    // $myGuest->setFirstname($table["firstname"]);
+    // $myGuest->setLastname($table["lastname"]);
+    // $myGuest->setEmail($table["email"]);
+    // $myGuest->setRegdate($table["reg_date"]);
+    // }
 
     public function getAllGuests()
     {
         $sqlString = "SELECT id, firstname, lastname, email, reg_date FROM MyGuests";
+
         $query = $this->conn->prepare($sqlString);
+
         $query->execute();
-        //Create a list
+
         $guestList = array();
-        while ($myGuest = $query->fetchObject("MyGuests")) {
+
+        while ($myGuest = $query->fetchObject('MyGuests')) {
             $guestList[] = $myGuest;
         }
+
         return $guestList;
     }
 
