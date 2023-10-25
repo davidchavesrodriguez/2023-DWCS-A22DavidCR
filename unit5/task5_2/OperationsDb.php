@@ -8,7 +8,7 @@ error_reporting(E_ALL);
 
 class OperationsDb
 {
-    private $conn;
+    private $conn; 
 
     public function openConnection()
     {
@@ -119,7 +119,7 @@ class OperationsDb
     // +int modifyStudent(Student student) --> 
     // It uses the student dni to search for it in the DB, it modifies its data 
     // using the rest of the object attributes.
-    public function modifyStudent($student)
+    /* public function modifyStudent($student)
     {
         try {
             $this->conn->beginTransaction();
@@ -140,7 +140,7 @@ class OperationsDb
             $this->conn->rollBack();
             throw $e;
         }
-    }
+    } */
 
     // +array studentsList() --> 
     // It returns an array with all the students in the database.
