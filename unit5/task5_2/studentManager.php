@@ -4,15 +4,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Student List</title>
+    <style>
+        body {
+            background-color: #92ABFF;
+        }
+
+        h1 {
+            text-align: center;
+            background-color: #E9C9F8;
+            margin-bottom: 1.5em;
+            text-decoration: underline;
+        }
+
+        table {
+            background-color: #E9C9F8;
+            border: solid black 1px;
+            border-collapse: collapse;
+            width: 80%;
+            table-layout: fixed;
+            margin: auto;
+        }
+
+        th,
+        td {
+            border: solid black 1px;
+            border-collapse: collapse;
+            align-items: center;
+            text-align: center;
+        }
+
+        th {
+            font-size: 2em;
+        }
+
+        td {
+            text-decoration: <?php echo $color ?>;
+        }
+        tr:hover{
+            font-size: 1.7em;
+        }
+    </style>
 </head>
 
-<?php
-// $rand = array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f');
-// $color = '#' . $rand[rand(0, 15)] . $rand[rand(0, 15)] . $rand[rand(0, 15)] . $rand[rand(0, 15)] . $rand[rand(0, 15)] . $rand[rand(0, 15)]; 
-?>
 
-<body height=100% style="background-color: <?php echo $color; ?>;">
+<body>
 
     <?php
     require_once("OperationsDb.php");
@@ -20,9 +56,8 @@
 
 
     //ADD STUDENT
-    // try {
+    //+ try {
     //     $oper = new OperationsDb();
-
     //     $student = new Student("12345678Z", "Isamel", "Fit", 33);
     //     $numberOfAddedRows = $oper->addStudent($student);
     //     if ($numberOfAddedRows == 1) {
@@ -58,6 +93,21 @@
     } else {
         if (count($studentList) > 0) {
             echo "<h1>Student List</h1>";
+            echo "<table>";
+            echo "<tr>
+                <th>
+                    Name
+                </th>
+                <th>
+                    Surname
+                </th>
+                <th>
+                    DNI
+                </th>
+                <th>
+                    Age
+                </th>
+            </tr>";
 
             foreach ($studentList as $student) {
                 $rand = array(
@@ -67,12 +117,23 @@
                 $color = '#' . $rand[rand(0, 15)] . $rand[rand(0, 15)] .
                     $rand[rand(0, 15)] . $rand[rand(0, 15)] . $rand[rand(0, 15)] .
                     $rand[rand(0, 15)];
-                echo "<h2 style='color:$color;'>Student: </h2>";
-                echo "<b>DNI:</b> " . $student['dni'] . "<br>";
-                echo "<b>Name:</b> " . $student['name'] . "<br>";
-                echo "<b>Surname:</b> " . $student['surname'] . "<br>";
-                echo "<b>Age:</b> " . $student['age'] . "<br><br>";
+
+                echo "<tr>";
+                echo "<td>";
+                echo "<b style='text-decoration: underline; text-decoration-color: $color'>" . $student['name'] . "</b>";
+                echo "</td>";
+                echo "<td>";
+                echo $student['surname'];
+                echo "</td>";
+                echo "<td>";
+                echo $student['dni'];
+                echo "</td>";
+                echo "<td>";
+                echo $student['age'];
+                echo "</td>";
+                echo "</tr>";
             }
+            echo "</table>";
         } else {
             echo "No students found.";
         }
