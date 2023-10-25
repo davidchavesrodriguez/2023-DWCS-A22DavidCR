@@ -43,6 +43,7 @@
         }
         tr:hover{
             font-size: 1.7em;
+            background-color: #BEADFA;
         }
     </style>
 </head>
