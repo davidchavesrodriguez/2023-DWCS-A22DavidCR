@@ -41,7 +41,7 @@
         td {
             text-decoration: <?php echo $color ?>;
         }
-        tr:hover{
+        .hover:hover{
             font-size: 1.7em;
             background-color: #BEADFA;
         }
@@ -119,7 +119,7 @@
                     $rand[rand(0, 15)] . $rand[rand(0, 15)] . $rand[rand(0, 15)] .
                     $rand[rand(0, 15)];
 
-                echo "<tr>";
+                echo "<tr class='hover'>";
                 echo "<td>";
                 echo "<b style='text-decoration: underline; text-decoration-color: $color'>" . $student['name'] . "</b>";
                 echo "</td>";
