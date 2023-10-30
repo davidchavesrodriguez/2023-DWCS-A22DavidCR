@@ -197,6 +197,13 @@
                 echo "<input type='submit' name='updateStudentSubmit' value='Update Student'>";
                 echo "</form>";
             }
+            if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["addStudentSubmit"])) {
+                $dni = $_POST["dni"];
+                $name = $_POST["name"];
+                $surname = $_POST["surname"];
+                $age = $_POST["age"];
+                $oper->addStudent(new Student($dni, $name, $surname, $age));
+            }
 
             echo "<table>";
             echo "<tr>
