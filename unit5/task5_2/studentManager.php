@@ -169,7 +169,7 @@
             }
 
             if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["deleteStudent"])) {
-                echo "<form>";
+                echo "<form action=" . htmlspecialchars($_SERVER["PHP_SELF"]) . " method='POST' enctype='multipart/form-data'>";
                 echo "<br><label for='idDni'>Student's DNI you want to delete: </label>";
                 echo "<input type='text' id='idDni' name='dni'></input><br>";
                 echo "<input type='submit' name='deleteStudentSubmit' value='Delete Student'>";
@@ -177,9 +177,9 @@
             }
 
             if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["getStudent"])) {
-                echo "<form>";
+                echo "<form action=" . htmlspecialchars($_SERVER["PHP_SELF"]) . " method='POST' enctype='multipart/form-data'>";
                 echo "<br><label for='idDni'>Student's DNI you want to see: </label>";
-                echo "<input type='text' id='idDni' name='dni'></input><br>";
+                echo "<input type='text' id='idDni' name='dni' required></input><br>";
                 echo "<input type='submit' name='getStudentSubmit' value='See Student'>";
                 echo "</form>";
             }
@@ -205,6 +205,33 @@
                 $oper->addStudent(new Student($dni, $name, $surname, $age));
             }
 
+            if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["deleteStudentSubmit"])) {
+                $dni = $_POST["dni"];
+                $oper->deleteStudent($dni);
+                echo "<b>Deleted student with dni ". $dni. "</b>";
+            }
+
+            if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["getStudentSubmit"])) {
+                $dni = $_POST["dni"];
+                $myStudent = $oper->getStudent($dni);
+            
+                if ($myStudent === null) {
+                    echo "Student not found.";
+                } else {
+                    echo $myStudent;
+                }
+            }
+
+            if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["updateStudentSubmit"])) {
+                $dni = $_POST["dni"];
+                $name = $_POST["name"];
+                $surname = $_POST["surname"];
+                $age = $_POST["age"];
+                $oper->modifyStudent(new Student($dni, $name, $surname, $age));
+                echo "<b>Modified student with dni ". $dni. "</b>";
+            }
+
+            if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["allStudents"])) {
             echo "<table>";
             echo "<tr>
                 <th>
@@ -245,7 +272,7 @@
                 echo "</td>";
                 echo "</tr>";
             }
-            echo "</table>";
+            echo "</table>"; }
         } else {
             echo "No students found.";
         }
