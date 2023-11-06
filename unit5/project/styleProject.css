@@ -1,0 +1,38 @@
+body {
+  background-color: #d2e0fb;
+}
+
+th,
+td {
+  border: solid black 1px;
+  border-collapse: collapse;
+}
+
+th {
+  padding: 1.2em;
+  background-color: aliceblue;
+}
+
+td {
+  padding: 0.7em;
+}
+
+.hover:hover {
+  font-size: 1.5em;
+  font-family: 'Courier New', Courier, monospace;
+  background-color: aquamarine;
+}
+
+table {
+  border-collapse: collapse;
+  display: flex;
+  justify-content: center;
+  align-self: center;
+  width: 80%;
+  table-layout: fixed;
+  margin: auto;
+}
+
+h1 {
+  text-align: center;
+}

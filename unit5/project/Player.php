@@ -11,7 +11,7 @@
 class Player
 {
     private int $playerId;
-    private string $playerName;
+    private string $firstName;
     private string $lastName;
     private DateTime $dateOfBirth;
     private string $position;
@@ -19,187 +19,106 @@ class Player
     private int $pointsScored;
     private int $teamId;
 
-    /**
-     * Get the value of playerId
-     *
-     * @return int
-     */
     public function getPlayerId(): int
     {
         return $this->playerId;
     }
 
-    /**
-     * Set the value of playerId
-     *
-     * @param int $playerId
-     *
-     * @return self
-     */
     public function setPlayerId(int $playerId): self
     {
         $this->playerId = $playerId;
         return $this;
     }
 
-    /**
-     * Get the value of playerName
-     *
-     * @return string
-     */
-    public function getPlayerName(): string
+    public function getFirstName(): string
     {
-        return $this->playerName;
+        return $this->firstName;
     }
 
-    /**
-     * Set the value of playerName
-     *
-     * @param string $playerName
-     *
-     * @return self
-     */
-    public function setPlayerName(string $playerName): self
+    public function setFirstName(string $playerName): self
     {
-        $this->playerName = $playerName;
+        $this->firstName = $playerName;
         return $this;
     }
 
-    /**
-     * Get the value of lastName
-     *
-     * @return string
-     */
     public function getLastName(): string
     {
         return $this->lastName;
     }
 
-    /**
-     * Set the value of lastName
-     *
-     * @param string $lastName
-     *
-     * @return self
-     */
     public function setLastName(string $lastName): self
     {
         $this->lastName = $lastName;
         return $this;
     }
 
-    /**
-     * Get the value of dateOfBirth
-     *
-     * @return DateTime
-     */
     public function getDateOfBirth(): DateTime
     {
         return $this->dateOfBirth;
     }
 
-    /**
-     * Set the value of dateOfBirth
-     *
-     * @param DateTime $dateOfBirth
-     *
-     * @return self
-     */
     public function setDateOfBirth(DateTime $dateOfBirth): self
     {
         $this->dateOfBirth = $dateOfBirth;
         return $this;
     }
 
-    /**
-     * Get the value of position
-     *
-     * @return string
-     */
     public function getPosition(): string
     {
         return $this->position;
     }
 
-    /**
-     * Set the value of position
-     *
-     * @param string $position
-     *
-     * @return self
-     */
     public function setPosition(string $position): self
     {
         $this->position = $position;
         return $this;
     }
 
-    /**
-     * Get the value of jerseyNumber
-     *
-     * @return int
-     */
     public function getJerseyNumber(): int
     {
         return $this->jerseyNumber;
     }
 
-    /**
-     * Set the value of jerseyNumber
-     *
-     * @param int $jerseyNumber
-     *
-     * @return self
-     */
     public function setJerseyNumber(int $jerseyNumber): self
     {
         $this->jerseyNumber = $jerseyNumber;
         return $this;
     }
 
-    /**
-     * Get the value of pointsScored
-     *
-     * @return int
-     */
     public function getPointsScored(): int
     {
         return $this->pointsScored;
     }
 
-    /**
-     * Set the value of pointsScored
-     *
-     * @param int $pointsScored
-     *
-     * @return self
-     */
     public function setPointsScored(int $pointsScored): self
     {
         $this->pointsScored = $pointsScored;
         return $this;
     }
 
-    /**
-     * Get the value of teamId
-     *
-     * @return int
-     */
     public function getTeamId(): int
     {
         return $this->teamId;
     }
 
-    /**
-     * Set the value of teamId
-     *
-     * @param int $teamId
-     *
-     * @return self
-     */
     public function setTeamId(int $teamId): self
     {
         $this->teamId = $teamId;
         return $this;
+    }
+
+    public function __toString(): string
+    {
+        return sprintf(
+            " ",
+            $this->getPlayerId(),
+            $this->getFirstName(),
+            $this->getLastName(),
+            $this->getDateOfBirth(),
+            $this->getPosition(),
+            $this->getJerseyNumber(),
+            $this->getPointsScored(),
+            $this->getTeamId()
+        );
     }
 }
