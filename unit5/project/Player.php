@@ -11,13 +11,33 @@
 class Player
 {
     private int $playerId;
-    private string $firstName;
+    private string $playerName;
     private string $lastName;
     private DateTime $dateOfBirth;
     private string $position;
     private int $jerseyNumber;
     private int $pointsScored;
     private int $teamId;
+
+    public function __construct(
+        int $playerId,
+        string $playerName,
+        string $lastName,
+        DateTime $dateOfBirth,
+        string $position,
+        int $jerseyNumber,
+        int $teamId,
+        int $pointsScored = 0 // There is no player with points scored before being in the Fedetarion!
+    ) {
+        $this->playerId = $playerId;
+        $this->playerName = $playerName;
+        $this->lastName = $lastName;
+        $this->dateOfBirth = $dateOfBirth;
+        $this->position = $position;
+        $this->jerseyNumber = $jerseyNumber;
+        $this->teamId = $teamId;
+        $this->pointsScored = $pointsScored;
+    }
 
     public function getPlayerId(): int
     {
@@ -30,27 +50,30 @@ class Player
         return $this;
     }
 
-    public function getFirstName(): string
+    public function getPlayerName(): string
     {
-        return $this->firstName;
+        return $this->playerName;
     }
 
-    public function setFirstName(string $playerName): self
+    public function setPlayerName(string $playerName): self
     {
-        $this->firstName = $playerName;
+        $this->playerName = $playerName;
         return $this;
     }
+
 
     public function getLastName(): string
     {
         return $this->lastName;
     }
 
+
     public function setLastName(string $lastName): self
     {
         $this->lastName = $lastName;
         return $this;
     }
+
 
     public function getDateOfBirth(): DateTime
     {
@@ -105,20 +128,5 @@ class Player
     {
         $this->teamId = $teamId;
         return $this;
-    }
-
-    public function __toString(): string
-    {
-        return sprintf(
-            " ",
-            $this->getPlayerId(),
-            $this->getFirstName(),
-            $this->getLastName(),
-            $this->getDateOfBirth(),
-            $this->getPosition(),
-            $this->getJerseyNumber(),
-            $this->getPointsScored(),
-            $this->getTeamId()
-        );
     }
 }

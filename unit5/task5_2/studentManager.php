@@ -6,68 +6,68 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student List</title>
     <style>
-        .svg-icon {
-            width: 2em;
-            height: 2em;
-        }
+    .svg-icon {
+        width: 2em;
+        height: 2em;
+    }
 
-        .svg-icon path,
-        .svg-icon polygon,
-        .svg-icon rect {
-            fill: #4691f6;
-        }
+    .svg-icon path,
+    .svg-icon polygon,
+    .svg-icon rect {
+        fill: #4691f6;
+    }
 
-        .svg-icon circle {
-            stroke: #4691f6;
-            stroke-width: 1;
-        }
+    .svg-icon circle {
+        stroke: #4691f6;
+        stroke-width: 1;
+    }
 
-        body {
-            background-color: #92ABFF;
-        }
+    body {
+        background-color: #92ABFF;
+    }
 
-        h1 {
-            text-align: center;
-            background-color: #E9C9F8;
-            margin-bottom: 1.5em;
-            text-decoration: underline;
-        }
+    h1 {
+        text-align: center;
+        background-color: #E9C9F8;
+        margin-bottom: 1.5em;
+        text-decoration: underline;
+    }
 
-        table {
-            background-color: #E9C9F8;
-            border: solid black 1px;
-            border-collapse: collapse;
-            width: 80%;
-            table-layout: fixed;
-            margin: auto;
-            margin-top: 50px;
-        }
+    table {
+        background-color: #E9C9F8;
+        border: solid black 1px;
+        border-collapse: collapse;
+        width: 80%;
+        table-layout: fixed;
+        margin: auto;
+        margin-top: 50px;
+    }
 
-        th,
-        td {
-            border: solid black 1px;
-            border-collapse: collapse;
-            align-items: center;
-            text-align: center;
-        }
+    th,
+    td {
+        border: solid black 1px;
+        border-collapse: collapse;
+        align-items: center;
+        text-align: center;
+    }
 
-        th {
-            font-size: 2em;
-        }
+    th {
+        font-size: 2em;
+    }
 
-        td {
-            text-decoration: <?php echo $color ?>;
-        }
+    td {
+        text-decoration: <?php echo $color ?>;
+    }
 
-        .hover:hover {
-            font-size: 1.7em;
-            background-color: #F4DDFF;
-        }
+    .hover:hover {
+        font-size: 1.7em;
+        background-color: #F4DDFF;
+    }
 
-        form {
-            margin: auto;
-            text-align: center;
-        }
+    form {
+        margin: auto;
+        text-align: center;
+    }
     </style>
 </head>
 

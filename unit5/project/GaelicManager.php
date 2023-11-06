@@ -12,11 +12,13 @@
 <body>
     <h1>Galician Gaelic League</h1>
 
-    <button type="submit">Team Details</button>
-    <button type="submit">Players</button>
-    <button type="submit">Add Team</button>
-    <button type="submit">Delete Team</button>
-    <button type="submit">Federation Page</button>
+    <nav>
+        <button type="submit">Team Details</button>
+        <button type="submit">Players</button>
+        <button type="submit">Add Team</button>
+        <button type="submit">Delete Team</button>
+        <button type="submit">Federation Page</button>
+    </nav>
 
     <?php
     require_once("OperationsProject.php");
@@ -30,11 +32,13 @@
     echo "  <tr>";
     echo "    <th>TEAM</th>";
     echo "    <th>CITY</th>";
+    echo "    <th>STADIUM</th>";
     echo "  </tr>";
     foreach ($teamList as $team) {
         echo "<tr class='hover'>";
         echo "  <td>" . $team["teamName"] . "</td>";
         echo "  <td>" . $team["city"] . "</td>";
+        echo "  <td>" . $team["homeStadium"] . "</td>";
         echo "</tr>";
     }
     echo "</table>";

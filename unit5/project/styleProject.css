@@ -1,36 +1,58 @@
 body {
   background-color: #d2e0fb;
+  width: 100%;
+}
+
+nav {
+  text-align: center;
+}
+
+h1 {
+  position: sticky;
+  top: 0;
+  background-color: lightskyblue;
+}
+
+button {
+  font-size: 1.33em;
+  border: solid lightskyblue 3px;
+  box-shadow: 3px 3px 3px black;
+}
+
+button:hover {
+  box-shadow: 5px 5px 5px black;
+  font-size: 1.4em;
 }
 
 th,
 td {
-  border: solid black 1px;
+  border: solid lightskyblue 1px;
   border-collapse: collapse;
 }
 
 th {
   padding: 1.2em;
+  font-size: 1.8em;
   background-color: aliceblue;
 }
 
 td {
   padding: 0.7em;
+  font-size: 1.05em;
 }
 
 .hover:hover {
   font-size: 1.5em;
-  font-family: 'Courier New', Courier, monospace;
-  background-color: aquamarine;
+  background-color: lightskyblue;
 }
 
 table {
   border-collapse: collapse;
-  display: flex;
-  justify-content: center;
-  align-self: center;
-  width: 80%;
+  text-align: center;
+  width: 75%;
   table-layout: fixed;
   margin: auto;
+  margin-top: 5%;
 }
 
 h1 {

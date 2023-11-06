@@ -34,7 +34,7 @@ class OperationsProject
     public function teamList()
     {
         try {
-            $sqlString = "SELECT teamName, city FROM teams;";
+            $sqlString = "SELECT teamName, city, homeStadium FROM teams;";
             $query = $this->connection->prepare($sqlString);
             $query->execute();
             $result = $query->fetchAll(PDO::FETCH_ASSOC);
