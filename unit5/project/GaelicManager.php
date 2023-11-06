@@ -11,15 +11,13 @@
 
 <body>
     <h1>Galician Gaelic League</h1>
-    <table>
-        <tr>
-            <th>Team Details</th>
-            <th>Players</th>
-            <th>Add Team</th>
-            <th>Delete Team</th>
-            <th>Federation Page</th>
-        </tr>
-    </table>
+
+    <button type="submit">Team Details</button>
+    <button type="submit">Players</button>
+    <button type="submit">Add Team</button>
+    <button type="submit">Delete Team</button>
+    <button type="submit">Federation Page</button>
+
     <?php
     require_once("OperationsProject.php");
     error_reporting(E_ALL);
