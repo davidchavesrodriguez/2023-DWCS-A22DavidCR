@@ -25,11 +25,20 @@
     </nav>
 
     <?php
-    require_once("OperationsProject.php");
+    require("methods/Connection.php");
+    require("methods/TeamMethod.php");
     error_reporting(E_ALL);
 
     // Abrimos conexión
-    $operation = new OperationsProject();
+    $operation = new Connection();
+
+    function test_input($data)
+    {
+        $data = trim($data);
+        $data = stripslashes($data);
+        $data = htmlspecialchars($data);
+        return $data;
+    }
 
     // Show Team
     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["getTeam"])) {

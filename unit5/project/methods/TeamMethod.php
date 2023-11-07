@@ -1,36 +1,13 @@
 <?php
-require_once("Player.php");
-require_once("Team.php");
-class OperationsProject
+require("Connection.php");
+class TeamMethod
 {
-
     private $connection;
-    public function openConnection()
-    {
-        $serverName = "localhost";
-        $username = "gaelicUser";
-        $password = "abc123.";
-        $dbName = "gaelic";
-
-        $this->connection = new PDO(
-            "mysql:host=$serverName;dbname=$dbName",
-            $username,
-            $password
-        );
-        $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    }
 
     public function __construct()
     {
-        $this->openConnection();
+        $this->connection = new Connection(); // Inicializa la conexión a la base de datos.
     }
-
-    public function closeConnection()
-    {
-        $this->connection = null;
-    }
-
-
     public function teamList()
     {
         try {
@@ -69,29 +46,6 @@ class OperationsProject
             throw $e;
         }
     }
-    // public function getStudent($dni)
-    // {
-    //     try {
-    //         $sqlString = "SELECT dni, name, surname, age FROM student WHERE dni=?";
-    //         $query = $this->conn->prepare($sqlString);
-    //         $query->execute([$dni]);
-
-    //         if ($query->rowCount() > 0) {
-    //             $student = $query->fetch();
-    //             $myStudent = new Student(
-    //                 $student["dni"],
-    //                 $student["name"],
-    //                 $student["surname"],
-    //                 $student["age"]
-    //             );
-    //             return $myStudent;
-    //         } else {
-    //             return null;
-    //         }
-    //     } catch (PDOException $e) {
-    //         return ["error" => $e->getMessage()];
-    //     }
-    // }
 
     public function getTeam($teamName)
     {
