@@ -31,6 +31,7 @@
 
     // Abrimos conexión
     $operation = new Connection();
+    $teamMethod = new TeamMethod();
 
     function test_input($data)
     {
@@ -48,7 +49,7 @@
         echo "<input type='submit' name='getTeam' value='Get Team' />";
         echo "</form>";
         $teamName = $_POST["getTeamSubmit"];
-        $team = $operation->getTeam($teamName);
+        $team = $teamMethod->getTeam($teamName);
         if ($team) {
             echo "<h2>Team Details for {$team->getTeamName()}</h2>";
             echo "<p><strong>City:</strong> {$team->getCity()}</p>";
@@ -80,7 +81,7 @@
                 $_POST["homeStadium"]
             );
 
-            $addedRows = $operation->addTeam($newTeam);
+            $addedRows = $teamMethod->addTeam($newTeam);
 
             if ($addedRows > 0) {
                 echo "Team added successfully.";
@@ -92,7 +93,7 @@
 
 
     // Show All Teams
-    $teamList = $operation->teamList();
+    $teamList = $teamMethod->teamList();
     echo "<table>";
     echo "  <tr>";
     echo "    <th>TEAM</th>";
