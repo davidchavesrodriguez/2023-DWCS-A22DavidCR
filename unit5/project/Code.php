@@ -147,7 +147,7 @@ class Team
     private int $foundedYear;
     private string $homeStadium;
 
-    public function __construct($teamId, $teamName, $city, $foundedYear, $homeStadium)
+    public function __construct($teamName, $city, $foundedYear, $homeStadium, $teamId = 0)
     {
         $this->teamId = $teamId;
         $this->teamName = $teamName;
@@ -155,6 +155,7 @@ class Team
         $this->foundedYear = $foundedYear;
         $this->homeStadium = $homeStadium;
     }
+
 
     public function getTeamId(): int
     {
@@ -346,11 +347,64 @@ class TeamMethod
             return ["error" => $e->getMessage()];
         }
     }
-}
-?>
 
-<?php
-error_reporting(E_ALL);
+    public function deleteTeam($teamName)
+    {
+        try {
+            $this->connection->beginTransaction();
+            $sqlString = "DELETE FROM teams WHERE teamName=?";
+            $query = $this->connection->prepare($sqlString);
+            $query->bindParam(1, $teamName);
+            $query->execute();
+            $this->connection->commit();
+        } catch (PDOException $e) {
+            $this->connection->rollBack();
+            throw new Exception("" . $e->getMessage());
+        }
+    }
+}
+
+class PlayerMethod
+{
+    private $connection;
+
+    public function __construct()
+    {
+        $this->connection = new Connection();
+    }
+    public function showPlayers($teamName)
+    {
+        try {
+            $sqlString =
+                "SELECT Players.playerId, Players.firstName, Players.lastName, Players.dateOfBirth, Players.position, Players.jerseyNumber, Players.pointsScored
+            FROM Players
+            JOIN Teams ON Players.teamId = Teams.teamId
+            WHERE Teams.teamName = ?";
+
+            $query = $this->connection->prepare($sqlString);
+            $query->execute([$teamName]);
+
+            $players = [];
+
+            while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
+                $player = new Player(
+                    $row["playerId"],
+                    $row["firstName"],
+                    $row["lastName"],
+                    new DateTime($row["dateOfBirth"]),
+                    $row["position"],
+                    $row["jerseyNumber"],
+                    $row["pointsScored"]
+                );
+                $players[] = $player;
+            }
+
+            return $players;
+        } catch (PDOException $e) {
+            return ["error" => $e->getMessage()];
+        }
+    }
+}
 
 // Open connection
 try {
@@ -361,6 +415,7 @@ try {
 }
 
 $teamMethod = new TeamMethod();
+$playerMethod = new PlayerMethod();
 
 
 ?>
@@ -405,7 +460,7 @@ $teamMethod = new TeamMethod();
     // Show Team
     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["getTeam"])) {
         echo "<form action=\"" . htmlspecialchars($_SERVER["PHP_SELF"]) . "\" method='POST' enctype='multipart/form-data'>";
-        echo "<br><label for='getTeamSubmit'>Name of the team you want to check: </label>";
+        echo "<br><label for='getTeamSubmit'>Name of the team you want to check data: </label>";
         echo "<input type='text' id='getTeamSubmit' name='getTeamSubmit' /><br><br>";
         echo "<input type='submit' name='getTeam' value='Get Team' />";
         echo "</form>";
@@ -450,6 +505,32 @@ $teamMethod = new TeamMethod();
             echo "Failed to add the team.";
         }
     }
+
+    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["getPlayers"])) {
+        echo "<form action=\"" . htmlspecialchars($_SERVER["PHP_SELF"]) . "\" method='POST' enctype='multipart/form-data'>";
+        echo "<br><label for='getTeamSubmit'>Name of the team you want to check players: </label>";
+        echo "<input type='text' id='getTeamSubmit' name='getTeamSubmit' /><br><br>"; // Change the field name to 'getTeamSubmit'
+        echo "<input type='submit' name='getPlayers' value='Get Players' />";
+        echo "</form>";
+        $teamName = $_POST["getTeamSubmit"]; // Change 'showPlayers' to 'teamName' to reflect the correct variable
+        $players = $playerMethod->showPlayers($teamName); // Change 'showPlayer' to 'showPlayers'
+
+        if ($players) {
+            // Iterating through the players and displaying their details
+            foreach ($players as $player) {
+                echo "<h2>Player Details for {$player->getPlayerName()}</h2>";
+                echo "<p><strong>Player ID:</strong> {$player->getPlayerId()}</p>";
+                echo "<p><strong>Last Name:</strong> {$player->getLastName()}</p>";
+                echo "<p><strong>Date of Birth:</strong> {$player->getDateOfBirth()->format('Y-m-d')}</p>";
+                echo "<p><strong>Position:</strong> {$player->getPosition()}</p>";
+                echo "<p><strong>Jersey Number:</strong> {$player->getJerseyNumber()}</p>";
+                echo "<p><strong>Points Scored:</strong> {$player->getPointsScored()}</p>";
+            }
+        }
+    }
+
+
+
 
     // Show All Teams
     $teamList = $teamMethod->teamList();
