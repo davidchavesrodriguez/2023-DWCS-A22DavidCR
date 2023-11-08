@@ -17,20 +17,19 @@
         <form action="<?= htmlspecialchars($_SERVER["PHP_SELF"]) ?>" method="POST" enctype="multipart/form-data">
             <button type="submit" name="getTeam">Team Details</button>
             <button type="submit" name="getPlayers">Players</button>
-            <button type="submit" name="addTeam">Add Team</button>
+            <button type="submit" name="addTeam">Add New Team</button>
             <button type="submit" name="deleteTeam">Delete Team</button>
             <button type="submit" name="federationPage"><a href="https://gaelicogalego.gal/">Federation
                     Page</a></button>
         </form>
     </nav>
 
-    <?php
-    require("methods/Connection.php");
-    require("methods/TeamMethod.php");
-    error_reporting(E_ALL);
 
-    // Abrimos conexión
-    $operation = new Connection();
+    <?php
+
+    require("./methods/Connection.php");
+    require("./methods/TeamMethod.php");
+    $connection = new Connection();
     $teamMethod = new TeamMethod();
 
     function test_input($data)
@@ -49,12 +48,16 @@
         echo "<input type='submit' name='getTeam' value='Get Team' />";
         echo "</form>";
         $teamName = $_POST["getTeamSubmit"];
-        $team = $teamMethod->getTeam($teamName);
-        if ($team) {
-            echo "<h2>Team Details for {$team->getTeamName()}</h2>";
-            echo "<p><strong>City:</strong> {$team->getCity()}</p>";
-            echo "<p><strong>Founded Year:</strong> {$team->getFoundedYear()}</p>";
-            echo "<p><strong>Home Stadium:</strong> {$team->getHomeStadium()}</p>";
+        try {
+            $team = $teamMethod->getTeam($teamName);
+            if ($team) {
+                echo "<h2>Team Details for {$team->getTeamName()}</h2>";
+                echo "<p><strong>City:</strong> {$team->getCity()}</p>";
+                echo "<p><strong>Founded Year:</strong> {$team->getFoundedYear()}</p>";
+                echo "<p><strong>Home Stadium:</strong> {$team->getHomeStadium()}</p>";
+            }
+        } catch (Exception $e) {
+            echo "" . $e->getMessage() . "";
         }
     }
 
@@ -91,7 +94,6 @@
         }
     }
 
-
     // Show All Teams
     $teamList = $teamMethod->teamList();
     echo "<table>";
@@ -108,6 +110,7 @@
         echo "</tr>";
     }
     echo "</table>";
+
     ?>
 </body>
 

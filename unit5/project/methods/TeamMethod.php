@@ -1,13 +1,14 @@
 <?php
-require("Connection.php");
+require("./Connection.php");
+require("../classes/Team.php");
 class TeamMethod
 {
     private $connection;
-
     public function __construct()
     {
-        $this->connection = new Connection(); // Inicializa la conexión a la base de datos.
+        $this->connection = new Connection();
     }
+
     public function teamList()
     {
         try {
@@ -53,6 +54,7 @@ class TeamMethod
             $sqlString = "SELECT teamId, teamName, city, foundedYear, homeStadium FROM teams WHERE teamName=?;";
             $query = $this->connection->prepare($sqlString);
             $query->execute([$teamName]);
+            echo "Searching for team: " . $teamName . "<br>";
 
             if ($query->rowCount() > 0) {
                 $team = $query->fetch();
@@ -65,6 +67,7 @@ class TeamMethod
                 );
                 return $showTeam;
             } else {
+                echo "Team not found.<br>";
                 return null;
             }
         } catch (PDOException $e) {

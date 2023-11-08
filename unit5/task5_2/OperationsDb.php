@@ -8,14 +8,14 @@ error_reporting(E_ALL);
 
 class OperationsDb
 {
-    private $conn; 
+    private $conn;
 
     public function openConnection()
     {
         $servername = "localhost";
-        $username = "manager";
+        $username = "gaelicUser";
         $password = "abc123.";
-        $dbName = "school";
+        $dbName = "gaelic";
 
         $this->conn = new PDO(
             "mysql:host=$servername;dbname=$dbName",
@@ -123,18 +123,18 @@ class OperationsDb
     {
         try {
             $this->conn->beginTransaction();
-    
+
             $sqlString = "UPDATE student SET name=?, surname=?, age=? WHERE dni=?";
-    
+
             $stmt = $this->conn->prepare($sqlString);
-    
+
             $dni = $student->getDni();
             $name = $student->getName();
             $surname = $student->getSurname();
             $age = $student->getAge();
-    
+
             $stmt->execute([$name, $surname, $age, $dni]);
-    
+
             $this->conn->commit();
         } catch (PDOException $e) {
             $this->conn->rollBack();
@@ -149,14 +149,12 @@ class OperationsDb
         try {
             $sqlString = "SELECT dni, name, surname, age FROM student";
             $query = $this->conn->prepare($sqlString);
-            $query->execute();    
-            $result= $query->fetchAll(PDO::FETCH_ASSOC);
-    
+            $query->execute();
+            $result = $query->fetchAll(PDO::FETCH_ASSOC);
+
             return $result;
         } catch (PDOException $e) {
             return ["error" => $e->getMessage()];
         }
     }
-    
-    
 }

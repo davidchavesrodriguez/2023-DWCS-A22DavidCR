@@ -3,19 +3,25 @@
 class Connection
 {
     private $connection;
+    private $serverName = "localhost";
+    private $username = "gaelicUser";
+    private $password = "abc123.";
+    private $dbName = "gaelic";
+
+    public function __construct()
+    {
+        $this->openConnection();
+    }
 
     public function openConnection()
     {
-        $serverName = "localhost";
-        $username = "gaelicUser";
-        $password = "abc123.";
-        $dbName = "gaelic";
 
         $this->connection = new PDO(
-            "mysql:host=$serverName;dbname=$dbName",
-            $username,
-            $password
+            "mysql:host=$this->serverName;dbname=$this->dbName",
+            $this->username,
+            $this->password
         );
+
         $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
 
@@ -37,11 +43,6 @@ class Connection
     public function rollBack()
     {
         $this->connection->rollBack();
-    }
-
-    public function __construct()
-    {
-        $this->openConnection();
     }
 
     public function closeConnection()
