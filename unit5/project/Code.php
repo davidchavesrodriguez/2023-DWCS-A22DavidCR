@@ -376,10 +376,10 @@ class PlayerMethod
     {
         try {
             $sqlString =
-                "SELECT Players.playerId, Players.firstName, Players.lastName, Players.dateOfBirth, Players.position, Players.jerseyNumber, Players.pointsScored
-            FROM Players
-            JOIN Teams ON Players.teamId = Teams.teamId
-            WHERE Teams.teamName = ?";
+                "SELECT players.playerId, players.firstName, players.lastName, players.dateOfBirth, players.position, players.jerseyNumber, players.pointsScored
+            FROM players
+            JOIN teams ON players.teamId = teams.teamId
+            WHERE teams.teamName = ?";
 
             $query = $this->connection->prepare($sqlString);
             $query->execute([$teamName]);
@@ -509,11 +509,11 @@ $playerMethod = new PlayerMethod();
     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["getPlayers"])) {
         echo "<form action=\"" . htmlspecialchars($_SERVER["PHP_SELF"]) . "\" method='POST' enctype='multipart/form-data'>";
         echo "<br><label for='getTeamSubmit'>Name of the team you want to check players: </label>";
-        echo "<input type='text' id='getTeamSubmit' name='getTeamSubmit' /><br><br>"; // Change the field name to 'getTeamSubmit'
+        echo "<input type='text' id='getTeamSubmit' name='getTeamSubmit' /><br><br>";
         echo "<input type='submit' name='getPlayers' value='Get Players' />";
         echo "</form>";
-        $teamName = $_POST["getTeamSubmit"]; // Change 'showPlayers' to 'teamName' to reflect the correct variable
-        $players = $playerMethod->showPlayers($teamName); // Change 'showPlayer' to 'showPlayers'
+        $teamName = $_POST["getTeamSubmit"];
+        $players = $playerMethod->showPlayers($teamName);
 
         if ($players) {
             // Iterating through the players and displaying their details
@@ -527,6 +527,17 @@ $playerMethod = new PlayerMethod();
                 echo "<p><strong>Points Scored:</strong> {$player->getPointsScored()}</p>";
             }
         }
+    }
+
+    // Delete Team
+    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["deleteTeam"])) {
+        echo "<form action=\"" . htmlspecialchars($_SERVER["PHP_SELF"]) . "\" method='POST' enctype='multipart/form-data'>";
+        echo "<br><label for='deleteTeamSubmit'>Name of the team you want to DELETE: </label>";
+        echo "<input type='text' id='deleteTeamSubmit' name='deleteTeamSubmit' /><br><br>";
+        echo "<input type='submit' name='getPlayers' value='Destroy' />";
+        echo "</form>";
+        $deleteTeam = $_POST["deleteTeamSubmit"];
+        $delete = $teamMethod->deleteTeam($deleteTeam);
     }
 
 
