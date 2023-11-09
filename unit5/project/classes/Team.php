@@ -7,20 +7,21 @@
 
 class Team
 {
-    private int $teamId;
+    private ?int $teamId;
     private string $teamName;
     private string $city;
     private int $foundedYear;
     private string $homeStadium;
 
-    public function __construct($teamName, $city, $foundedYear, $homeStadium, $teamId = null)
+    public function __construct($teamName, $city, $foundedYear, $homeStadium, $teamId = 0)
     {
+        $this->teamId = $teamId;
         $this->teamName = $teamName;
         $this->city = $city;
         $this->foundedYear = $foundedYear;
         $this->homeStadium = $homeStadium;
-        $this->teamId = $teamId;
     }
+
 
     public function getTeamId(): int
     {
@@ -31,7 +32,6 @@ class Team
         $this->teamId = (int) $this->teamId;
         return $this;
     }
-
     public function getTeamName(): string
     {
         return $this->teamName;

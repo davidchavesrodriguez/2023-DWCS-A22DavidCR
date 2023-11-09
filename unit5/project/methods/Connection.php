@@ -1,5 +1,4 @@
 <?php
-
 class Connection
 {
     private $connection;
@@ -15,14 +14,17 @@ class Connection
 
     public function openConnection()
     {
+        try {
+            $this->connection = new PDO(
+                "mysql:host=$this->serverName;dbname=$this->dbName",
+                $this->username,
+                $this->password
+            );
 
-        $this->connection = new PDO(
-            "mysql:host=$this->serverName;dbname=$this->dbName",
-            $this->username,
-            $this->password
-        );
-
-        $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        } catch (PDOException $e) {
+            die("Error de conexión: " . $e->getMessage());
+        }
     }
 
     public function prepare($sqlString)

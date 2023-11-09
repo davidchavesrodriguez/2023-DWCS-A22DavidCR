@@ -1,9 +1,8 @@
 <?php
-require("./Connection.php");
-require("../classes/Team.php");
 class TeamMethod
 {
     private $connection;
+
     public function __construct()
     {
         $this->connection = new Connection();
@@ -12,7 +11,7 @@ class TeamMethod
     public function teamList()
     {
         try {
-            $sqlString = "SELECT teamName, city, homeStadium FROM teams;";
+            $sqlString = "SELECT teamName, city FROM teams;";
             $query = $this->connection->prepare($sqlString);
             $query->execute();
             $result = $query->fetchAll(PDO::FETCH_ASSOC);
@@ -35,7 +34,7 @@ class TeamMethod
 
             $query->bindParam(1, $teamName, PDO::PARAM_STR);
             $query->bindParam(2, $city, PDO::PARAM_STR);
-            $query->bindParam(3, $foundedYear, PDO::PARAM_STR);
+            $query->bindParam(3, $foundedYear, PDO::PARAM_INT);
             $query->bindParam(4, $homeStadium, PDO::PARAM_STR);
 
             $query->execute();
@@ -44,7 +43,7 @@ class TeamMethod
             return $numberOfAddedRows;
         } catch (PDOException $e) {
             $this->connection->rollBack();
-            throw $e;
+            throw new Exception("Error al agregar el equipo: " . $e->getMessage());
         }
     }
 
@@ -54,7 +53,6 @@ class TeamMethod
             $sqlString = "SELECT teamId, teamName, city, foundedYear, homeStadium FROM teams WHERE teamName=?;";
             $query = $this->connection->prepare($sqlString);
             $query->execute([$teamName]);
-            echo "Searching for team: " . $teamName . "<br>";
 
             if ($query->rowCount() > 0) {
                 $team = $query->fetch();
@@ -67,11 +65,28 @@ class TeamMethod
                 );
                 return $showTeam;
             } else {
-                echo "Team not found.<br>";
                 return null;
             }
         } catch (PDOException $e) {
             return ["error" => $e->getMessage()];
+        }
+    }
+
+    public function deleteTeam($teamName)
+    {
+        try {
+            $this->connection->beginTransaction();
+            $sqlString = "DELETE FROM teams WHERE teamName=?";
+            $query = $this->connection->prepare($sqlString);
+            $query->bindParam(1, $teamName);
+            $query->execute();
+            $this->connection->commit();
+
+            // Check if the deletion was successful and return a boolean value
+            return $query->rowCount() > 0;
+        } catch (PDOException $e) {
+            $this->connection->rollBack();
+            throw new Exception("" . $e->getMessage());
         }
     }
 }
