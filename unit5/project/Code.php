@@ -538,6 +538,10 @@ $playerMethod = new PlayerMethod();
         echo "</form>";
         $deleteTeam = $_POST["deleteTeamSubmit"];
         $delete = $teamMethod->deleteTeam($deleteTeam);
+        //????
+        if ($delete) {
+            echo "Deleted.";
+        }
     }
 
 
