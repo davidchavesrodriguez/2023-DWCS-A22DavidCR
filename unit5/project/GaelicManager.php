@@ -14,7 +14,8 @@
 
     <!-- Upper Buttons -->
     <nav>
-        <form action="<?= htmlspecialchars($_SERVER["PHP_SELF"]) ?>" method="POST" enctype="multipart/form-data">
+        <form action="<?= htmlspecialchars($_SERVER["PHP_SELF"]) ?>" method="POST" enctype="multipart/form-data"
+            class="buttons">
             <button type="submit" name="getTeam">Team Details</button>
             <button type="submit" name="getPlayers">Players</button>
             <button type="submit" name="addTeam">Add New Team</button>
@@ -45,23 +46,25 @@
     // Show Team
     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["getTeam"])) {
         echo "<form action=\"" . htmlspecialchars($_SERVER["PHP_SELF"]) . "\" method='POST' enctype='multipart/form-data'>";
-        echo "<br><label for='getTeamSubmit'>Name of the team you want to check data: </label>";
+        echo "<br><label for='getTeamSubmitText'>Name of the team you want to check data: </label>";
         echo "<input type='text' id='getTeamSubmitText' name='getTeamSubmitText' />";
         echo "<input type='submit' name='getTeamSubmit' value='Get Team' />";
         echo "</form>";
+        if (isset($_POST["getTeamSubmitText"])) {
+            $teamName = $_POST["getTeamSubmitText"];
+            $team = $teamMethod->getTeam($teamName);
 
-        $teamName = $_POST["getTeamSubmitText"];
-        $team = $teamMethod->getTeam($teamName);
-
-        if ($team) {
-            echo "<h2>Team Details for {$team->getTeamName()}</h2>";
-            echo "<p><strong>City:</strong> {$team->getCity()}</p>";
-            echo "<p><strong>Founded Year:</strong> {$team->getFoundedYear()}</p>";
-            echo "<p><strong>Home Stadium:</strong> {$team->getHomeStadium()}</p>";
-        } else {
-            echo "Team not found or an error occurred.";
+            if ($team) {
+                echo "<h2>Team Details for {$team->getTeamName()}</h2>";
+                echo "<p><strong>City:</strong> {$team->getCity()}</p>";
+                echo "<p><strong>Founded Year:</strong> {$team->getFoundedYear()}</p>";
+                echo "<p><strong>Home Stadium:</strong> {$team->getHomeStadium()}</p>";
+            } else {
+                echo "Team not found or an error occurred.";
+            }
         }
     }
+
 
     //Add Team
     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["addTeam"])) {
@@ -100,26 +103,29 @@
     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["getPlayers"])) {
         echo "<form action=\"" . htmlspecialchars($_SERVER["PHP_SELF"]) . "\" method='POST' enctype='multipart/form-data'>";
         echo "<br><label for='getTeamSubmit'>Name of the team you want to check players: </label>";
-        echo "<input type='text' id='getTeamSubmit' name='getTeamSubmit' /><br><br>";
+        echo "<input type='text' id='getTeamSubmit' name='getTeamSubmit' />";
         echo "<input type='submit' name='getPlayers' value='Get Players' />";
         echo "</form>";
-        $teamName = $_POST["getTeamSubmit"];
-        $players = $playerMethod->showPlayers($teamName);
 
-        if ($players) {
-            echo "<div class='player-details'>";
-            foreach ($players as $player) {
-                echo "<div class='player-card'>";
-                echo "<h2>{$player->getPlayerName()}</h2>";
-                echo "<p><strong>Player ID:</strong> {$player->getPlayerId()}</p>";
-                echo "<p><strong>Last Name:</strong> {$player->getLastName()}</p>";
-                echo "<p><strong>Date of Birth:</strong> {$player->getDateOfBirth()->format('Y-m-d')}</p>";
-                echo "<p><strong>Position:</strong> {$player->getPosition()}</p>";
-                echo "<p><strong>Jersey Number:</strong> {$player->getJerseyNumber()}</p>";
-                echo "<p><strong>Points Scored:</strong> {$player->getPointsScored()}</p>";
+        if (isset($_POST["getTeamSubmit"])) {
+            $teamName = $_POST["getTeamSubmit"];
+            $players = $playerMethod->showPlayers($teamName);
+
+            if ($players) {
+                echo "<div class='player-details'>";
+                foreach ($players as $player) {
+                    echo "<div class='player-card'>";
+                    echo "<h2>{$player->getPlayerName()}</h2>";
+                    echo "<p><strong>Player ID:</strong> {$player->getPlayerId()}</p>";
+                    echo "<p><strong>Last Name:</strong> {$player->getLastName()}</p>";
+                    echo "<p><strong>Date of Birth:</strong> {$player->getDateOfBirth()->format('Y-m-d')}</p>";
+                    echo "<p><strong>Position:</strong> {$player->getPosition()}</p>";
+                    echo "<p><strong>Jersey Number:</strong> {$player->getJerseyNumber()}</p>";
+                    echo "<p><strong>Points Scored:</strong> {$player->getPointsScored()}</p>";
+                    echo "</div>";
+                }
                 echo "</div>";
             }
-            echo "</div>";
         }
     }
 
@@ -130,13 +136,15 @@
         echo "<input type='text' id='deleteTeamSubmit' name='deleteTeamSubmit' /><br><br>";
         echo "<input type='submit' name='deleteTeam' value='Destroy' />"; // Change the button name
         echo "</form>";
-        $deleteTeam = $_POST["deleteTeamSubmit"];
-        $deleted = $teamMethod->deleteTeam($deleteTeam);
+        if (isset($_POST["deleteTeamSubmit"])) {
+            $deleteTeam = $_POST["deleteTeamSubmit"];
+            $deleted = $teamMethod->deleteTeam($deleteTeam);
 
-        if ($deleted) {
-            echo "Team deleted successfully.";
-        } else {
-            echo "Failed to delete the team.";
+            if ($deleted) {
+                echo "Team deleted successfully.";
+            } else {
+                echo "Failed to delete the team.";
+            }
         }
     }
 

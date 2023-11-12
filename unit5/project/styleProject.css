@@ -104,3 +104,16 @@ img {
   width: 15%;
   height: 15%;
 }
+
+form:not(nav form) {
+  margin: auto;
+  background-color: palegoldenrod;
+  width: fit-content;
+  text-align: center;
+  font-weight: bolder;
+  font-size: 1.3em;
+}
+
+nav form {
+  margin-bottom: 5%;
+}
