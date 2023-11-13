@@ -43,27 +43,36 @@
         return $data;
     }
 
-    // Show Team
+    // Show Team Data
     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["getTeam"])) {
         echo "<form action=\"" . htmlspecialchars($_SERVER["PHP_SELF"]) . "\" method='POST' enctype='multipart/form-data'>";
-        echo "<br><label for='getTeamSubmitText'>Name of the team you want to check data: </label>";
-        echo "<input type='text' id='getTeamSubmitText' name='getTeamSubmitText' />";
-        echo "<input type='submit' name='getTeamSubmit' value='Get Team' />";
+        echo "<br><label for='showTeamSubmitText'>Name of the team you want to check data: </label>";
+        echo "<input type='text' id='showTeamSubmitText' name='showTeamSubmitText' />";
+        echo "<input type='submit' name='showTeamSubmit' value='Show Team' />";
         echo "</form>";
-        if (isset($_POST["getTeamSubmitText"])) {
-            $teamName = $_POST["getTeamSubmitText"];
-            $team = $teamMethod->getTeam($teamName);
+    }
 
-            if ($team) {
-                echo "<h2>Team Details for {$team->getTeamName()}</h2>";
-                echo "<p><strong>City:</strong> {$team->getCity()}</p>";
-                echo "<p><strong>Founded Year:</strong> {$team->getFoundedYear()}</p>";
-                echo "<p><strong>Home Stadium:</strong> {$team->getHomeStadium()}</p>";
-            } else {
-                echo "Team not found or an error occurred.";
-            }
+    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["showTeamSubmit"])) {
+        echo "<form>";
+        echo "<h2>Team Details for Turonia </h2>";
+        echo "<p>Team ID: 2</p>";
+        echo "<p>City: Gondomar</p>";
+        echo "<p>Founded Year: 2018</p>";
+        echo "<p>Home Stadium: Gándara de Chaín</p>";
+        echo "</form>";
+        $teamNameInput = test_input($_POST["showTeamSubmitText"]);
+        $team = $teamMethod->getTeam($teamNameInput);
+        if ($team) {
+            echo "<h2>Team Details for " . $team->getTeamName() . "</h2>";
+            echo "<p>Team ID: " . $team->getTeamId() . "</p>";
+            echo "<p>City: " . $team->getCity() . "</p>";
+            echo "<p>Founded Year: " . $team->getFoundedYear() . "</p>";
+            echo "<p>Home Stadium: " . $team->getHomeStadium() . "</p>";
+        } else {
+            echo "<p>There is no such team</p>";
         }
     }
+
 
 
     //Add Team
@@ -83,10 +92,10 @@
 
     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submitAddTeam"])) {
         $newTeam = new Team(
-            $_POST["teamName"],
-            $_POST["city"],
-            $_POST["foundedYear"],
-            $_POST["homeStadium"]
+            test_input($_POST["teamName"]),
+            test_input($_POST["city"]),
+            test_input($_POST["foundedYear"]),
+            test_input($_POST["homeStadium"])
         );
 
         $addedRows = $teamMethod->addTeam($newTeam);
@@ -108,7 +117,7 @@
         echo "</form>";
 
         if (isset($_POST["getTeamSubmit"])) {
-            $teamName = $_POST["getTeamSubmit"];
+            $teamName = test_input($_POST["getTeamSubmit"]);
             $players = $playerMethod->showPlayers($teamName);
 
             if ($players) {
@@ -137,7 +146,7 @@
         echo "<input type='submit' name='deleteTeam' value='Destroy' />"; // Change the button name
         echo "</form>";
         if (isset($_POST["deleteTeamSubmit"])) {
-            $deleteTeam = $_POST["deleteTeamSubmit"];
+            $deleteTeam = test_input($_POST["deleteTeamSubmit"]);
             $deleted = $teamMethod->deleteTeam($deleteTeam);
 
             if ($deleted) {

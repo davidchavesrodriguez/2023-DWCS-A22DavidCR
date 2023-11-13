@@ -71,7 +71,7 @@ class Team
     public function __toString(): string
     {
         return sprintf(
-            " ",
+            "Team ID: %d, Team Name: %s, City: %s, Founded Year: %d, Home Stadium: %s",
             $this->teamId,
             $this->teamName,
             $this->city,

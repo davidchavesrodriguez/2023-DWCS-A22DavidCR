@@ -50,27 +50,24 @@ class TeamMethod
     public function getTeam($teamName)
     {
         try {
-            $sqlString = "SELECT teamId, teamName, city, foundedYear, homeStadium FROM teams WHERE teamName=?;";
+            $sqlString = "SELECT teamId, teamName, city, foundedYear, homeStadium FROM teams WHERE teamName=:teamName;";
             $query = $this->connection->prepare($sqlString);
-            $query->execute([$teamName]);
+            $query->execute([':teamName' => $teamName]);
 
             if ($query->rowCount() > 0) {
-                $team = $query->fetch();
-                $showTeam = new Team(
-                    $team["teamId"],
-                    $team["teamName"],
-                    $team["city"],
-                    $team["foundedYear"],
-                    $team["homeStadium"]
-                );
-                return $showTeam;
+                $team = $query->fetchObject('Team');
+                return $team;
             } else {
                 return null;
             }
         } catch (PDOException $e) {
-            return ["error" => $e->getMessage()];
+            // echo "Error: " . $e->getMessage();
+            return null;
         }
     }
+
+
+
 
     public function deleteTeam($teamName)
     {
