@@ -14,8 +14,7 @@
 
     <!-- Upper Buttons -->
     <nav>
-        <form action="<?= htmlspecialchars($_SERVER["PHP_SELF"]) ?>" method="POST" enctype="multipart/form-data"
-            class="buttons">
+        <form action="<?= htmlspecialchars($_SERVER["PHP_SELF"]) ?>" method="POST" enctype="multipart/form-data" class="buttons">
             <button type="submit" name="getTeam">Team Details</button>
             <button type="submit" name="getPlayers">Players</button>
             <button type="submit" name="addTeam">Add New Team</button>
@@ -37,10 +36,14 @@
 
     function test_input($data)
     {
-        $data = trim($data);
-        $data = stripslashes($data);
-        $data = htmlspecialchars($data);
-        return $data;
+        if (empty($data)) {
+            echo "ERROR: FIELD CAN NOT BE EMPTY";
+        } else {
+            $data = trim($data);
+            $data = stripslashes($data);
+            $data = htmlspecialchars($data);
+            return $data;
+        }
     }
 
     // Show Team Data
