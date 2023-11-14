@@ -18,30 +18,58 @@ Create a link to navigate to the page "next.php"
 
 Create a link to logout. -->
 
+<?php
+// index.php
+
+// Start the session
+session_start();
+
+// Include the DBOperations.php file
+require_once 'DBOperations.php';
+
+// Instantiate the Operations class to establish a database connection
+$operations = new Operations();
+
+// Instantiate the Login class with the database connection
+$login = new Login($operations->getPdo());
+
+// Check if the user is logged in
+if (!$login->validateUser($_SESSION['username'], $_SESSION['password'])) {
+    // Redirect to the login page if the user is not logged in
+    header("Location: login.php");
+    exit();
+}
+
+// Save an object of the class Example in the session
+$exampleInSession = new Example(1, 'Example in Session');
+$_SESSION['example_in_session'] = $exampleInSession;
+
+// Save an object of the class Example in a cookie
+$exampleInCookie = new Example(2, 'Example in Cookie');
+setcookie('example_cookie', serialize($exampleInCookie), time() + 3600, '/'); // Change "example_cookie" to your actual cookie name
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Index</title>
 </head>
 
 <body>
-    <!--
-    <h1>Welcome!</h1>
-    <form action="login.php" method="post">
-        <label for="userName">Username</label>
-        <input type="text" name="username" />
-        <br><br>
-        <label for="password">Password</label>
-        <input type="password" name="password" />
-        <br><br>
-        <input type="submit" name="submit" /> -->
+    <h2>Welcome to the Index Page</h2>
 
-    <a href="./next.php">Next -></a>
-    <a href="./logout.php">-Logout-</a>
-    </form>
+    <p>Contents of the session:</p>
+    <pre><?php print_r($_SESSION); ?></pre>
+
+    <p>Contents of the cookie:</p>
+    <pre><?php print_r($_COOKIE); ?></pre>
+
+    <p><a href="next.php">Go to Next Page</a></p>
+    <p><a href="logout.php">Logout</a></p>
 </body>
 
 </html>
