@@ -1,0 +1,119 @@
+body {
+  background-color: #d2e0fb;
+  background-image: url('./images/patternTransparent.png');
+}
+
+nav {
+  text-align: center;
+}
+
+h1 {
+  position: sticky;
+  top: 0;
+  background-color: lightskyblue;
+}
+
+button {
+  font-size: 1.6em;
+  border: solid lightskyblue 3px;
+  box-shadow: 3px 3px 3px black;
+}
+
+button:hover {
+  box-shadow: 5px 5px 5px black;
+  font-size: 1.9em;
+}
+
+th,
+td {
+  border: solid dodgerblue 2px;
+  border-collapse: collapse;
+}
+
+th {
+  padding: 1.2em;
+  font-size: 1.8em;
+  background-color: whitesmoke;
+}
+
+td {
+  padding: 0.7em;
+  font-size: 1.05em;
+}
+
+.hover {
+  background-color: aliceblue;
+}
+
+.hover:hover {
+  font-size: 1.5em;
+  background-color: lightskyblue;
+}
+
+table {
+  display: table;
+  border-collapse: collapse;
+  text-align: center;
+  table-layout: fixed;
+  margin: auto;
+  margin-top: 5%;
+  width: 50%;
+}
+
+h1 {
+  text-align: center;
+}
+
+a,
+a:visited,
+a:hover,
+a:active {
+  color: black;
+  text-decoration: none;
+}
+
+.player-details {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.player-card {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin: 10px;
+  padding: 10px;
+  max-width: 300px;
+  background-color: palegoldenrod;
+}
+
+.player-card h2 {
+  font-size: 1.5em;
+  margin: 0;
+}
+
+.player-card p {
+  margin: 5px 0;
+}
+
+main {
+  display: flex;
+  flex-direction: row;
+}
+img {
+  width: 15%;
+  height: 15%;
+}
+
+form:not(nav form) {
+  margin: auto;
+  background-color: palegoldenrod;
+  width: fit-content;
+  text-align: center;
+  font-weight: bolder;
+  font-size: 1.3em;
+}
+
+nav form {
+  margin-bottom: 5%;
+}
