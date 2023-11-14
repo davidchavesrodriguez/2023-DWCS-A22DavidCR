@@ -7,6 +7,17 @@ VALUES
 ('A22DavidCR', 'abc123.'),
 ('A22JulioAA', 'abc123.'),
 ('A22IsamelLF', 'abc123.'); -->
+
+<!--index.php
+
+This is a web page that requires a valid user in order to view its contents.
+
+Save an object of the class Example in the session and another object of the class Example in a cookie.
+
+Create a link to navigate to the page "next.php"
+
+Create a link to logout. -->
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -17,6 +28,7 @@ VALUES
 </head>
 
 <body>
+    <!--
     <h1>Welcome!</h1>
     <form action="login.php" method="post">
         <label for="userName">Username</label>
@@ -25,7 +37,10 @@ VALUES
         <label for="password">Password</label>
         <input type="password" name="password" />
         <br><br>
-        <input type="submit" name="submit" />
+        <input type="submit" name="submit" /> -->
+
+    <a href="./next.php">Next -></a>
+    <a href="./logout.php">-Logout-</a>
     </form>
 </body>
 
