@@ -33,12 +33,12 @@ session_start();
     </nav>
 
     <?php
-    include("./classes/Player.php");
-    include("./classes/Team.php");
-    include("./classes/users.php");
-    include("./methods/Connection.php");
-    include("./methods/TeamMethod.php");
-    include("./methods/PlayerMethod.php");
+    include_once("./classes/Player.php");
+    include_once("./classes/Team.php");
+    include_once("./classes/users.php");
+    include_once("./methods/Connection.php");
+    include_once("./methods/TeamMethod.php");
+    include_once("./methods/PlayerMethod.php");
 
     $teamMethod = new TeamMethod();
     $playerMethod = new PlayerMethod();
@@ -160,19 +160,25 @@ session_start();
 
     // Delete Team
     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["deleteTeam"])) {
-        echo "<form action=\"" . htmlspecialchars($_SERVER["PHP_SELF"]) . "\" method='POST' enctype='multipart/form-data'>";
-        echo "<br><label for='deleteTeamSubmit'>Name of the team you want to DELETE: </label>";
-        echo "<input type='text' id='deleteTeamSubmit' name='deleteTeamSubmit' /><br><br>";
-        echo "<input type='submit' name='deleteTeam' value='Destroy' />"; // Change the button name
-        echo "</form>";
-        if (isset($_POST["deleteTeamSubmit"])) {
-            $deleteTeam = test_input($_POST["deleteTeamSubmit"]);
-            $deleted = $teamMethod->deleteTeam($deleteTeam);
+        if (($conectionMethod->checkUsers($_SESSION["username"], $_SESSION["password"])) === false) {
+            echo "You need to be an admin to make changes";
+            header("Location: login.php");
+            exit();
+        } else {
+            echo "<form action=\"" . htmlspecialchars($_SERVER["PHP_SELF"]) . "\" method='POST' enctype='multipart/form-data'>";
+            echo "<br><label for='deleteTeamSubmit'>Name of the team you want to DELETE: </label>";
+            echo "<input type='text' id='deleteTeamSubmit' name='deleteTeamSubmit' /><br><br>";
+            echo "<input type='submit' name='deleteTeam' value='Destroy' />"; // Change the button name
+            echo "</form>";
+            if (isset($_POST["deleteTeamSubmit"])) {
+                $deleteTeam = test_input($_POST["deleteTeamSubmit"]);
+                $deleted = $teamMethod->deleteTeam($deleteTeam);
 
-            if ($deleted) {
-                echo "Team deleted successfully.";
-            } else {
-                echo "Failed to delete the team.";
+                if ($deleted) {
+                    echo "Team deleted successfully.";
+                } else {
+                    echo "Failed to delete the team.";
+                }
             }
         }
     }

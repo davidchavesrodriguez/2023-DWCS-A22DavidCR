@@ -1,5 +1,6 @@
 <?php
 session_start();
+include_once("./classes/users.php");
 ?>
 
 <!DOCTYPE html>
@@ -14,6 +15,7 @@ session_start();
 
 <body>
     <?php
+    $conectionMethod = new User();
     echo "<form action=" . htmlspecialchars($_SERVER["PHP_SELF"]) . " method='POST' enctype='multipart/form-data'><br>";
     echo "<label for='adminLoginAdd'> Username </label>";
     echo "<input type='text' id='adminLoginAdd' name='adminLoginAdd'><br>";
@@ -24,13 +26,15 @@ session_start();
     echo "<a href='GaelicManager.php'>Go Back</a>";
     echo "</form>";
 
-    if ($conectionMethod->checkUsers($_SESSION["username"], $_SESSION["password"]) === true) {
+    if (isset($_POST["submitLoginUser"])) {
         $_SESSION["username"] = ($_POST["adminLoginAdd"]);
         $_SESSION["password"] = ($_POST["adminPasswordAdd"]);
-        header("Location: GaelicManager.php");
-    } else {
-        header("Location: login.php");
-        echo "You need to be an admin to make changes";
+        if ($conectionMethod->checkUsers($_SESSION["username"], $_SESSION["password"]) === true) {
+            header("Location: GaelicManager.php");
+        } else {
+            header("Location: login.php");
+            echo "You need to be an admin to make changes";
+        }
     }
     ?>
 </body>

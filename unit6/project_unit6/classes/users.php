@@ -1,21 +1,23 @@
 <?php
+require_once(__DIR__ . '/../methods/Connection.php');
+
 
 class User
 {
-    private $connection;
+    private $connectionUser;
     private int $userId;
     private string $username;
     private string $password;
 
     public function __construct()
     {
-        $this->connection = new Connection();
+        $this->connectionUser = new Connection();
     }
 
     public function checkUsers($username, $password)
     {
         $sqlString = "SELECT * FROM users WHERE username=? AND password=?";
-        $query = $this->connection->prepare($sqlString);
+        $query = $this->connectionUser->prepare($sqlString);
         $query->execute([$username, $password]);
 
         if ($query->rowCount() == 0) {
