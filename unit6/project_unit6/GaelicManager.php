@@ -1,10 +1,6 @@
 <?php
 session_start();
-if (!isset($_SESSION['usuario'])) {
-    header("Location: login.php?redirigido=true");
-}
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -29,19 +25,24 @@ if (!isset($_SESSION['usuario'])) {
             <button type="submit" name="deleteTeam">Delete Team</button>
             <button type="submit" name="federationPage"><a href="https://gaelicogalego.gal/">Federation
                     Page</a></button>
+            <?php if (isset($_SESSION["username"])) { ?>
+            <p>Welcome, <?php echo $_SESSION["username"] ?></p>
+            <?php } ?>
+            <a href="logout.php">Logout</a>
         </form>
     </nav>
 
     <?php
     include("./classes/Player.php");
     include("./classes/Team.php");
-    include("./classes/Login.php");
+    include("./classes/users.php");
     include("./methods/Connection.php");
     include("./methods/TeamMethod.php");
     include("./methods/PlayerMethod.php");
 
     $teamMethod = new TeamMethod();
     $playerMethod = new PlayerMethod();
+    $conectionMethod = new User();
 
     function test_input($data)
     {
@@ -54,6 +55,8 @@ if (!isset($_SESSION['usuario'])) {
             return $data;
         }
     }
+
+
 
     // Show Team Data
     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["getTeam"])) {
@@ -89,11 +92,9 @@ if (!isset($_SESSION['usuario'])) {
 
     //Add Team
     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["addTeam"])) {
-
-        if ($usu == false) {
-            $err = true;
-            $usuario = $_POST['usuario'];
-            header("Location: ./login/login.php");
+        if (($conectionMethod->checkUsers($_SESSION["username"], $_SESSION["password"])) === false) {
+            header("Location: login.php");
+            echo "You need to be an admin to make changes";
         } else {
             echo "<form action=\"" . htmlspecialchars($_SERVER["PHP_SELF"]) . "\" method='POST' enctype='multipart/form-data'>";
             echo "<br><label for='teamName'>Name of the team you want to add: </label>";
