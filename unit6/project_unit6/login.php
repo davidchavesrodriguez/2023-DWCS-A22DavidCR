@@ -17,6 +17,7 @@ include_once("./classes/users.php");
     <?php
     $conectionMethod = new User();
     echo "<form action=" . htmlspecialchars($_SERVER["PHP_SELF"]) . " method='POST' enctype='multipart/form-data'><br>";
+    echo "<h2 style='color: red;'>*You need to log in in order to make changes*</h2>";
     echo "<label for='adminLoginAdd'> Username </label>";
     echo "<input type='text' id='adminLoginAdd' name='adminLoginAdd'><br>";
     echo "<label for='adminPasswordAdd'> Password </label>";

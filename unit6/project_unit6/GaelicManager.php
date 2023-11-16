@@ -26,9 +26,9 @@ session_start();
             <button type="submit" name="federationPage"><a href="https://gaelicogalego.gal/">Federation
                     Page</a></button>
             <?php if (isset($_SESSION["username"])) { ?>
-            <p>Welcome, <?php echo $_SESSION["username"] ?></p>
+            <p><b>Welcome, <?php echo $_SESSION["username"] ?></b></p>
             <?php } ?>
-            <a href="logout.php">Logout</a>
+            <a href="logout.php"><b>Logout</b></a>
         </form>
     </nav>
 
