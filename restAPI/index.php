@@ -7,6 +7,9 @@ spl_autoload_register(function ($class) {
     require __DIR__ . "/src/$class.php";
 });
 
+set_error_handler("ErrorHandler::handleError");
+set_exception_handler("ErrorHandler::handleException");
+
 // *CHANGE OUTPUT FORMAT*
 header("Content-type: application/json; charset=UTF-8");
 
@@ -36,10 +39,22 @@ header("Content-type: application/json; charset=UTF-8");
 
 // *GET THE METHOD AND THE SECOND INDEX IF FIRST ONE IS "products"*
 $parts = explode("/", $_SERVER["REQUEST_URI"]);
+
 if ($parts[1] != "products") {
     http_response_code(404);
     exit;
 }
+
 $id = $parts[2] ?? null;
-$controller = new ProductController();
+
+
+
+// *Create conecction with a database*
+$database = new Database("localhost", "product_db", "appUser", "abc123.");
+$database->getConnection();
+
+
+$gateway = new ProductGateway($database);
+$controller = new ProductController($gateway);
+
 $controller->processRequest($_SERVER["REQUEST_METHOD"], $id);
