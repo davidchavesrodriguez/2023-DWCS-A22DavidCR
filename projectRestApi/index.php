@@ -1,12 +1,9 @@
 <?php
-include_once("./src/Player.php");
-include_once("./src/Database.php");
 include_once("./src/Methods.php");
 
 header("Content-type: application/json; charset=UTF-8");
 
-$database = new Database("localhost", "gaelic", "gaelicUser", "abc123.");
-$method = new Method($database);
+$method = new Method("localhost", "gaelic", "gaelicUser", "abc123.");
 
 try {
     $players = $method->teamList();

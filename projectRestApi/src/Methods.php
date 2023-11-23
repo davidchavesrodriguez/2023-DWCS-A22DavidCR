@@ -1,20 +1,36 @@
 <?php
+
 class Method
 {
     private $connection;
 
-    public function __construct(Database $database)
+    public function __construct(string $serverName, string $dbName, string $username, string $password)
     {
-        $this->connection = $database;
+        $this->openConnection($serverName, $dbName, $username, $password);
     }
+
+    private function openConnection(string $serverName, string $dbName, string $username, string $password)
+    {
+        try {
+            $dsn = "mysql:host={$serverName};dbname={$dbName};charset=utf8";
+            $this->connection = new PDO($dsn, $username, $password, [
+                PDO::ATTR_EMULATE_PREPARES => false,
+                PDO::ATTR_STRINGIFY_FETCHES => false,
+                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+            ]);
+        } catch (PDOException $e) {
+            throw new Exception("Database connection failed: " . $e->getMessage());
+        }
+    }
+
     public function showPlayers($teamName)
     {
         try {
             $sqlString =
                 "SELECT players.playerId, players.firstName, players.lastName, players.dateOfBirth, players.position, players.jerseyNumber, players.pointsScored
-    FROM players
-    JOIN teams ON players.teamId = teams.teamId
-    WHERE teams.teamName = ?";
+                FROM players
+                JOIN teams ON players.teamId = teams.teamId
+                WHERE teams.teamName = ?";
 
             $query = $this->connection->prepare($sqlString);
             $query->execute([$teamName]);
@@ -98,12 +114,9 @@ class Method
     }
 }
 
-
-
 // Open connection
 try {
-
-    $operation = new Database("localhost", "gaelic", "gaelicUser", "abc123.");
+    $operation = new Method("localhost", "gaelic", "gaelicUser", "abc123.");
 } catch (Exception $e) {
     echo "" . $e->getMessage();
 }
