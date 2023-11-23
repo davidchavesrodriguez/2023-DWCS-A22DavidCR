@@ -9,7 +9,7 @@ $database = new Database("localhost", "gaelic", "gaelicUser", "abc123.");
 $method = new Method($database);
 
 try {
-    $players = $method->showPlayers("Turonia");
+    $players = $method->teamList();
     $json = json_encode($players, JSON_PRETTY_PRINT);
     echo $json;
 } catch (Exception $e) {
