@@ -8,7 +8,7 @@
 // jerseyNumber: The player's jersey number.
 // pointsScored: The total points scored by the player.
 // teamId (Foreign Key): A reference to the team to which the player belongs.
-class Player
+class Player implements JsonSerializable
 {
     private int $playerId;
     private string $playerName;
@@ -128,5 +128,34 @@ class Player
     {
         $this->teamId = $teamId;
         return $this;
+    }
+
+    public function __toString(): string
+    {
+        return sprintf(
+            "Player ID: %d, Name: %s %s, Date of Birth: %s, Position: %s, Jersey Number: %d, Points Scored: %d, Team ID: %d",
+            $this->playerId,
+            $this->playerName,
+            $this->lastName,
+            $this->dateOfBirth->format('Y-m-d'),
+            $this->position,
+            $this->jerseyNumber,
+            $this->pointsScored,
+            $this->teamId
+        );
+    }
+
+    public function jsonSerialize(): array
+    {
+        return [
+            'playerId' => $this->playerId,
+            'playerName' => $this->playerName,
+            'lastName' => $this->lastName,
+            'dateOfBirth' => $this->dateOfBirth->format('Y-m-d'),
+            'position' => $this->position,
+            'jerseyNumber' => $this->jerseyNumber,
+            'pointsScored' => $this->pointsScored,
+            'teamId' => $this->teamId,
+        ];
     }
 }

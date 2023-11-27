@@ -3,6 +3,7 @@ include_once("./src/Methods.php");
 
 header("Content-type: application/json; charset=UTF-8");
 
+$parts = explode("/", $_SERVER["REQUEST_URI"]);
 $method = new Method("localhost", "gaelic", "gaelicUser", "abc123.");
 
 try {
