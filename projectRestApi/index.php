@@ -60,8 +60,34 @@ function handleTeamRequest(Method $method)
                 echo ("Team name not provided");
             }
             break;
+        case "PATCH":
+            $teamName = $GLOBALS['parts'][4] ?? null;
+            if ($teamName) {
+                $data = (array)json_decode(file_get_contents("php://input"), true);
+
+                if (isset($data["fieldToUpdate"]) && isset($data["newValue"])) {
+                    $fieldToUpdate = $data["fieldToUpdate"];
+                    $newValue = $data["newValue"];
+
+                    $success = $method->updateTeam($teamName, $fieldToUpdate, $newValue);
+
+                    if ($success) {
+                        echo ("Team updated successfully");
+                    } else {
+                        http_response_code(404);
+                        echo ("Team not found");
+                    }
+                } else {
+                    http_response_code(400);
+                    echo ("Field to update or new value not provided");
+                }
+            } else {
+                http_response_code(400);
+                echo ("Team name not provided");
+            }
+            break;
         default:
             http_response_code(405);
-            header("Allow: GET, POST, DELETE");
+            header("Allow: GET, POST, DELETE, PATCH");
     }
 }

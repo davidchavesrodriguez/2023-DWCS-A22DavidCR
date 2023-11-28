@@ -105,14 +105,38 @@ class Method
             $query->execute();
             $this->connection->commit();
 
-            // Check if the deletion was successful and return a boolean value
             return $query->rowCount() > 0;
         } catch (PDOException $e) {
             $this->connection->rollBack();
             throw new Exception("" . $e->getMessage());
         }
     }
+    public function updateTeam($teamName, $fieldToUpdate, $newValue)
+    {
+        try {
+            $this->connection->beginTransaction();
+
+            $allowedFields = ["city", "foundedYear", "homeStadium"];
+            if (!in_array($fieldToUpdate, $allowedFields)) {
+                throw new InvalidArgumentException("Invalid field to update");
+            }
+
+            $sqlString = "UPDATE teams SET {$fieldToUpdate}=? WHERE teamName=?";
+            $query = $this->connection->prepare($sqlString);
+            $query->bindParam(1, $newValue);
+            $query->bindParam(2, $teamName);
+            $query->execute();
+
+            $this->connection->commit();
+
+            return $query->rowCount() > 0;
+        } catch (PDOException $e) {
+            $this->connection->rollBack();
+            throw new Exception("Error updating team: " . $e->getMessage());
+        }
+    }
 }
+
 
 // Open connection
 try {
