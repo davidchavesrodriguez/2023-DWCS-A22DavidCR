@@ -72,7 +72,7 @@ class Method
     {
         try {
             $this->connection->beginTransaction();
-            $sqlString = "INSERT INTO teams(teamName, city, foundedYear, homeStadium) VALUES (?, ?, ?, ?);";
+            $sqlString = "INSERT INTO teams(teamName, city, foundedYear, homeStadium) VALUES (:teamName, :city, :foundedYear, :homeStadium);";
             $query = $this->connection->prepare($sqlString);
 
             $teamName = $team->getTeamName();
@@ -80,10 +80,10 @@ class Method
             $foundedYear = $team->getFoundedYear();
             $homeStadium = $team->getHomeStadium();
 
-            $query->bindParam(1, $teamName, PDO::PARAM_STR);
-            $query->bindParam(2, $city, PDO::PARAM_STR);
-            $query->bindParam(3, $foundedYear, PDO::PARAM_INT);
-            $query->bindParam(4, $homeStadium, PDO::PARAM_STR);
+            $query->bindParam(':teamName', $teamName, PDO::PARAM_STR);
+            $query->bindParam(':city', $city, PDO::PARAM_STR);
+            $query->bindParam(':foundedYear', $foundedYear, PDO::PARAM_INT);
+            $query->bindParam(':homeStadium', $homeStadium, PDO::PARAM_STR);
 
             $query->execute();
             $this->connection->commit();
@@ -94,6 +94,7 @@ class Method
             throw new Exception("Error al agregar el equipo: " . $e->getMessage());
         }
     }
+
 
     public function deleteTeam($teamName)
     {

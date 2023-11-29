@@ -1,4 +1,5 @@
 <?php
+include_once("./src/Team.php");
 include_once("./src/Methods.php");
 
 header("Content-type: application/json; charset=UTF-8");
@@ -43,10 +44,17 @@ function handleTeamRequest(Method $method)
                 $data["foundedYear"],
                 $data["homeStadium"]
             );
-            $method->addTeam($newTeam);
+            $addedRows = $method->addTeam($newTeam);
+
+            if ($addedRows > 0) {
+                echo ("Team added successfully");
+            } else {
+                http_response_code(500);
+                echo ("Failed to add team");
+            }
             break;
         case "DELETE":
-            $teamName = $GLOBALS['parts'][4] ?? null;
+            $teamName = $GLOBALS['parts'][3] ?? null;
             if ($teamName) {
                 $success = $method->deleteTeam($teamName);
                 if ($success) {
@@ -61,7 +69,7 @@ function handleTeamRequest(Method $method)
             }
             break;
         case "PATCH":
-            $teamName = $GLOBALS['parts'][4] ?? null;
+            $teamName = $GLOBALS['parts'][3] ?? null;
             if ($teamName) {
                 $data = (array)json_decode(file_get_contents("php://input"), true);
 
