@@ -81,5 +81,7 @@ VALUES(
         "12345678Z",
         "Pepinho",
         "Santiago de Compostela",
+        "pepinho",
+        "abc123.",
+        true
     );
--- ACABAR
