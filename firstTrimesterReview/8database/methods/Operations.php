@@ -1,6 +1,7 @@
 <?php
-include_once("./Product.php");
-include_once("./Category.php");
+include_once("./classes/Category.php");
+include_once("./classes/Product.php");
+include_once("./classes/User.php");
 class Operation
 {
     private $conn;
@@ -28,7 +29,7 @@ class Operation
     public function getProduct(int $id): ?Product
     {
         try {
-            $sqlString = "SELECT p.*, c.name as category_name FROM product p
+            $sqlString = "SELECT p.*, c.name AS nameCategory FROM product p
                       INNER JOIN category c ON p.idCategory = c.id
                       WHERE p.id=?";
             $query = $this->conn->prepare($sqlString);
@@ -37,26 +38,38 @@ class Operation
             $row = $query->fetch(PDO::FETCH_ASSOC);
 
             if ($row) {
-                // You need to create a Category object here
-                $category = new Category($row["idCategory"], $row["category_name"]);
+                $category = new Category($row["idCategory"], $row["nameCategory"]);
 
                 $product = new Product(
                     $row["id"],
                     $row["name"],
                     $row["description"],
                     $row["picture"],
-                    $category  // Pass the Category object instead of $row["category"]
+                    $category
                 );
                 return $product;
             } else {
                 return null;
             }
         } catch (PDOException $e) {
-            echo "Exception: " . $e->getMessage();
+            echo "Exception: {$e->getMessage()}";
             return null;
         }
     }
 
+    public function getAllProducts(): ?array
+    {
+        try {
+            $sqlString = "SELECT * FROM product";
+            $query = $this->conn->prepare($sqlString);
+            $query->execute();
+            $products = $query->fetchAll(PDO::FETCH_ASSOC);
+
+            return $products;
+        } catch (PDOException $e) {
+            return ["Exception: {$e->getMessage()}"];
+        }
+    }
 
     // public function getCategory(int $id): ?Category
     // {
@@ -65,6 +78,7 @@ class Operation
     // public function getAllCategories(): ?array
     // {
     // }
+    // SERVE PARA O SELECT DE WELCOMEPAGE
 
     // public function addProduct(Product $product): void
     // {

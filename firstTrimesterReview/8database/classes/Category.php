@@ -30,7 +30,7 @@ class Category implements JsonSerializable
 
     public function __toString()
     {
-        return "Category [ID: {$this->id}, Name: {$this->name}]";
+        return "Category: {$this->name} <br> Category ID: {$this->id} ";
     }
 
     public function jsonSerialize(): mixed

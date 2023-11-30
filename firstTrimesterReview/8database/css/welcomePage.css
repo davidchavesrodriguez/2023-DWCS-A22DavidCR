@@ -1,0 +1,6 @@
+nav ul {
+  display: flex;
+  flex-direction: row;
+  gap: 33%;
+  background-color: lightcoral;
+}

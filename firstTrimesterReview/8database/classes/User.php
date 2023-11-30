@@ -70,7 +70,7 @@ class User implements JsonSerializable
         return "User [ID: {$this->id}, DNI: {$this->dni}, Name: {$this->name}, Address: {$this->address}, Login: {$this->login}]";
     }
 
-    public function jsonSerialize()
+    public function jsonSerialize(): mixed
     {
         return [
             'id' => $this->id,

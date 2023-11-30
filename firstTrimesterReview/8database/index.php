@@ -13,19 +13,23 @@
     error_reporting(E_ALL);
     ini_set('display_errors', 1);
 
-    include_once("./Operations.php");
+    include_once("./methods/Operations.php");
     try {
         $oper = new Operation();
-        $product = $oper->getProduct(4);
-        if ($product) {
-            echo "Id: {$product->getId()}";
-            echo "<br>";
-            echo "Name: {$product->getName()}";
-            echo "<br>";
-            echo "Description: {$product->getDescription()}";
-            echo "<br>";
-            echo "Category: {$product->getCategory()}";
-        }
+        // GET PRODUCT
+        // $product = $oper->getProduct(1);
+        // if ($product) {
+        //     echo "Id: {$product->getId()}";
+        //     echo "<br>";
+        //     echo "Name: {$product->getName()}";
+        //     echo "<br>";
+        //     echo "Description: {$product->getDescription()}";
+        //     echo "<br>";
+        //     echo $product->getCategory();
+        // }
+
+        // GET ALL PRODUCTS
+        print_r($oper->getAllProducts());
     } catch (PDOException $e) {
         return ["error" => $e->getMessage()];
     }
