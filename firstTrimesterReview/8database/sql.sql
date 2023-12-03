@@ -10,7 +10,7 @@ CREATE TABLE product (
     id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(200),
     description VARCHAR(250),
-    EXISTS picture VARCHAR(250),
+    picture VARCHAR(250),
     idCategory INT,
     FOREIGN KEY (idCategory) REFERENCES category(id)
 );

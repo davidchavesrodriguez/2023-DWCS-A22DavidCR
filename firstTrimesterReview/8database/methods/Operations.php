@@ -41,11 +41,11 @@ class Operation
                 $category = new Category($row["idCategory"], $row["nameCategory"]);
 
                 $product = new Product(
-                    $row["id"],
                     $row["name"],
                     $row["description"],
                     $row["picture"],
-                    $category
+                    $category,
+                    $row["id"]
                 );
                 return $product;
             } else {
@@ -56,39 +56,122 @@ class Operation
             return null;
         }
     }
-
     public function getAllProducts(): ?array
     {
         try {
             $sqlString = "SELECT * FROM product";
             $query = $this->conn->prepare($sqlString);
             $query->execute();
-            $products = $query->fetchAll(PDO::FETCH_ASSOC);
+            $list = [];
 
-            return $products;
+            while ($row = $query->fetch()) {
+                $list[] = new Product(
+                    $row["name"],
+                    $row["description"],
+                    $row["picture"],
+                    new Category($row["idCategory"]),
+                    $row["id"]
+                );
+            }
+
+            return $list;
         } catch (PDOException $e) {
             return ["Exception: {$e->getMessage()}"];
         }
     }
 
-    // public function getCategory(int $id): ?Category
-    // {
-    // }
+    public function getCategory(int $id): ?Category
+    {
+        try {
+            $sqlString = "SELECT * FROM category WHERE id=?";
+            $query = $this->conn->prepare($sqlString);
+            $query->execute([$id]);
 
-    // public function getAllCategories(): ?array
-    // {
-    // }
-    // SERVE PARA O SELECT DE WELCOMEPAGE
+            $row = $query->fetch(PDO::FETCH_ASSOC);
 
-    // public function addProduct(Product $product): void
-    // {
-    // }
+            if ($row) {
+                $category = new Category($row["id"], $row["name"]);
+                return $category;
+            } else {
+                return null;
+            }
+        } catch (PDOException $e) {
+            echo "Exception: {$e->getMessage()}";
+            return null;
+        }
+    }
 
-    // public function updateProduct(Product $product): void
-    // {
-    // }
+    public function getAllCategories(): ?array
+    {
+        try {
+            $sqlString = "SELECT * FROM category";
+            $query = $this->conn->query($sqlString);
+            $categories = [];
 
-    // public function getUserName($login, $password): ?string
-    // {
-    // }
+            while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
+                $category = new Category($row["id"], $row["name"]);
+                $categories[] = $category;
+            }
+
+            return $categories;
+        } catch (PDOException $e) {
+            echo "Exception: {$e->getMessage()}";
+            return null;
+        }
+    }
+
+
+    public function addProduct(Product $product): void
+    {
+        try {
+            $sqlString = "INSERT INTO product (name, description, picture, idCategory) VALUES (?, ?, ?, ?)";
+            $query = $this->conn->prepare($sqlString);
+
+            $query->bindParam(1, $product->getName());
+            $query->bindParam(2, $product->getDescription());
+            $query->bindParam(3, $product->getPicture());
+            $query->bindParam(4, $product->getCategory()->getId());
+
+            $query->execute();
+        } catch (PDOException $e) {
+
+            error_log("Error adding product: " . $e->getMessage());
+        }
+    }
+
+    public function updateProduct(Product $product): void
+    {
+        try {
+            $sqlString = "UPDATE product SET name = ?, description = ?, picture = ?, idCategory = ? WHERE id = ?";
+            $query = $this->conn->prepare($sqlString);
+
+            $name = $product->getName();
+            $description = $product->getDescription();
+            $picture = $product->getPicture();
+            $categoryId = $product->getCategory()->getId();
+            $productId = $product->getId();
+
+            $query->execute([$name, $description, $picture, $categoryId, $productId]);
+        } catch (PDOException $e) {
+            echo "Exception: {$e->getMessage()}";
+        }
+    }
+
+
+    public function getUserName($login, $password): ?string
+    {
+        try {
+            $sqlString = "SELECT username FROM users WHERE login = ? AND password = ?";
+            $query = $this->conn->prepare($sqlString);
+
+            $query->execute([$login, $password]);
+
+            $row = $query->fetch(PDO::FETCH_ASSOC);
+
+            return $row ? $row['username'] : null;
+        } catch (PDOException $e) {
+            echo "Exception: {$e->getMessage()}";
+            return null;
+        }
+    }
 }

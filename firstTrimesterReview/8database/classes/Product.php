@@ -3,11 +3,11 @@
 class Product implements JsonSerializable
 {
     public function __construct(
-        private int $id,
         private string $name,
         private string $description,
         private string $picture,
-        private Category $category
+        private Category $category,
+        private ?int $id
     ) {
     }
 
