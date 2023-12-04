@@ -1,7 +1,7 @@
 <?php
-include_once("./classes/Category.php");
-include_once("./classes/Product.php");
-include_once("./classes/User.php");
+include_once("../classes/Category.php");
+include_once("../classes/Product.php");
+include_once("../classes/User.php");
 class Operation
 {
     private $conn;
@@ -161,14 +161,14 @@ class Operation
     public function getUserName($login, $password): ?string
     {
         try {
-            $sqlString = "SELECT username FROM users WHERE login = ? AND password = ?";
+            $sqlString = "SELECT name FROM user WHERE login = ? AND password = ?";
             $query = $this->conn->prepare($sqlString);
 
             $query->execute([$login, $password]);
 
             $row = $query->fetch(PDO::FETCH_ASSOC);
 
-            return $row ? $row['username'] : null;
+            return $row ? "Welcome, {$row['name']}!" : null;
         } catch (PDOException $e) {
             echo "Exception: {$e->getMessage()}";
             return null;

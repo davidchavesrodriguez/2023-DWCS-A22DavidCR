@@ -1,3 +1,12 @@
+<?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+session_start();
+
+include_once("./methods/Operations.php");
+$oper = new Operation();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,15 +14,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Database 8</title>
+    <link rel="stylesheet" href="./css/style.css" />
+
 </head>
 
-<body>
-    <h1>Database</h1>
+<body id="indexBody">
     <?php
-    error_reporting(E_ALL);
-    ini_set('display_errors', 1);
 
-    include_once("./methods/Operations.php");
 
 
     // FUNCTIONS
@@ -78,17 +85,40 @@
     //$oper->updateProduct($productToUpdate);  
 
     // GET USERNAME
-    //$oper = new Operation();
-    //$userName = $oper->getUserName("usuario", "contraseña");
+    // $oper = new Operation();
+    // $userName = $oper->getUserName("pepinho", "abc123.");
 
-    //if ($userName !== null) {
-    //   echo "Bienvenido, $userName!";
-    //} else {
-    //   echo "Credenciales no válidas.";
-    //}
+    // if ($userName !== null) {
+    //     echo "Bienvenido, $userName!";
+    // } else {
+    //     echo "Credenciales no válidas.";
+    // }
 
-
-
+    ?>
+    <header id="header">
+        <img src="./images/shopLogo.jpeg" alt="Shop Logo" id="shopLogo">
+        <h1>Corente's World</h1>
+    </header>
+    <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" id="userForm">
+        <fieldset class="pinkBackground">
+            <legend>Log in</legend>
+            <label for="login">Username</label>
+            <input type="text" name="login" />
+            <label for="password">Password</label>
+            <input type="password" name="password" />
+        </fieldset>
+        <input type="submit" value="Access">
+    </form>
+    <?php
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        $_SESSION["login"] = $_POST["login"];
+        $_SESSION["password"] = $_POST["password"];
+        if ($oper->getUserName($_SESSION["login"], $_SESSION["password"]) !== null) {
+            header("Location: ./pages/welcomePage.php");
+        } else {
+            echo "<img src='./images/finish.png'></img>";
+        }
+    }
     ?>
 </body>
 

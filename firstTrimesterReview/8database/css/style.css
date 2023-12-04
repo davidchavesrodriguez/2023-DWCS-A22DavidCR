@@ -1,0 +1,53 @@
+/* GLOBAL */
+body {
+  background-color: #fcdcfa;
+}
+
+.pinkBackground {
+  background-color: #f7c8f3;
+}
+
+#shopLogo {
+  width: 25%;
+  min-width: 200px;
+  max-width: 300px;
+}
+
+/* INDEX */
+#indexBody {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#userForm {
+  display: inline-block;
+  width: fit-content;
+  margin-top: 5%;
+}
+
+#userForm fieldset {
+  display: flex;
+  flex-direction: column;
+  font-size: larger;
+  font-weight: bolder;
+}
+
+/* WELCOME */
+#welcomeBody {
+  display: flex;
+  flex-direction: column;
+}
+nav ul {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  list-style: lower-greek;
+}
+
+header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
