@@ -1,5 +1,5 @@
 <?php
-include_once("../classes/Category.php");
+require("../classes/Category.php");
 include_once("../classes/Product.php");
 include_once("../classes/User.php");
 class Operation

@@ -3,7 +3,7 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 session_start();
 
-include_once("./methods/Operations.php");
+include_once("../methods/Operations.php");
 $oper = new Operation();
 ?>
 
@@ -18,10 +18,9 @@ $oper = new Operation();
 </head>
 
 <body id="welcomeBody">
-  <header id="header">
-    <img src="../images/shopLogo.jpeg" alt="Shop Logo" id="shopLogo">
-    <h1>Corente's World</h1>
-  </header>
+  <?php
+  include_once("./header.php");
+  ?>
   <nav id="welcomeNav" class="pinkBackground">
     <ul>
       <li><a href="#">Welcome Page</a></li>
@@ -37,6 +36,7 @@ $oper = new Operation();
     echo $oper->getUserName($_SESSION["login"], $_SESSION["password"]);
     ?>
   </aside>
+
 </body>
 
 </html>
