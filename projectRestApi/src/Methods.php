@@ -95,7 +95,7 @@ class Method
             throw new Exception("" . $e->getMessage());
         }
     }
-    public function updateTeam($teamName, $fieldToUpdate, $newValue)
+    public function updateTeam($teamId, $fieldToUpdate, $newValue)
     {
         try {
             $this->connection->beginTransaction();
@@ -105,10 +105,10 @@ class Method
                 throw new InvalidArgumentException("Invalid field to update");
             }
 
-            $sqlString = "UPDATE teams SET {$fieldToUpdate}=? WHERE teamName=?";
+            $sqlString = "UPDATE teams SET {$fieldToUpdate}=? WHERE teamId=?";
             $query = $this->connection->prepare($sqlString);
             $query->bindParam(1, $newValue);
-            $query->bindParam(2, $teamName);
+            $query->bindParam(2, $teamId);
             $query->execute();
 
             $this->connection->commit();

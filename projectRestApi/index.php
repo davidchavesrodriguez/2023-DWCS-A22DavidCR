@@ -89,15 +89,15 @@ function handleTeamRequest(Method $method)
             }
             break;
         case "PATCH":
-            $teamName = $GLOBALS['parts'][3] ?? null;
-            if ($teamName) {
+            $teamId = $GLOBALS['parts'][3] ?? null;
+            if ($teamId) {
                 $data = (array)json_decode(file_get_contents("php://input"), true);
 
                 if (isset($data["fieldToUpdate"]) && isset($data["newValue"])) {
                     $fieldToUpdate = $data["fieldToUpdate"];
                     $newValue = $data["newValue"];
 
-                    $success = $method->updateTeam($teamName, $fieldToUpdate, $newValue);
+                    $success = $method->updateTeam($teamId, $fieldToUpdate, $newValue);
 
                     if ($success) {
                         echo ("Team updated successfully");
