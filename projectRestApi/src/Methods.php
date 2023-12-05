@@ -23,39 +23,22 @@ class Method
         }
     }
 
-    public function showPlayers($teamName)
+    public function getTeam($teamId)
     {
         try {
-            $sqlString =
-                "SELECT players.playerId, players.firstName, players.lastName, players.dateOfBirth, players.position, players.jerseyNumber, players.pointsScored
-                FROM players
-                JOIN teams ON players.teamId = teams.teamId
-                WHERE teams.teamName = ?";
-
+            $sqlString = "SELECT teamName FROM teams WHERE teamId = ?";
             $query = $this->connection->prepare($sqlString);
-            $query->execute([$teamName]);
+            $query->bindParam(1, $teamId, PDO::PARAM_INT);
+            $query->execute();
+            $result = $query->fetch(PDO::FETCH_ASSOC);
 
-            $players = [];
-
-            while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
-                $player = new Player(
-                    $row["playerId"],
-                    $row["firstName"],
-                    $row["lastName"],
-                    new DateTime($row["dateOfBirth"]),
-                    $row["position"],
-                    $row["jerseyNumber"],
-                    $row["pointsScored"]
-                );
-                $players[] = $player;
-            }
-
-            return ["players" => $players];
+            return $result ? $result['teamName'] : null;
         } catch (PDOException $e) {
-            header("HTTP/1.1 500 Internal Server Error");
-            return ["error" => "Internal Server Error: " . $e->getMessage()];
+            return ["error" => $e->getMessage()];
         }
     }
+
+
     public function teamList()
     {
         try {

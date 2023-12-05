@@ -34,7 +34,27 @@ function handleTeamRequest(Method $method)
 {
     switch ($_SERVER["REQUEST_METHOD"]) {
         case "GET":
-            echo json_encode($method->teamList(), JSON_PRETTY_PRINT);
+            $teamId = $GLOBALS['parts'][3] ?? null;
+
+            if ($teamId !== null) {
+                $teamName = $method->getTeam($teamId);
+
+                if ($teamName !== null) {
+                    echo json_encode(["teamName" => $teamName], JSON_PRETTY_PRINT);
+                } else {
+                    http_response_code(404);
+                    echo json_encode(["error" => "Team not found"], JSON_PRETTY_PRINT);
+                }
+            } else {
+                $teamList = $method->teamList();
+
+                if (!empty($teamList)) {
+                    echo json_encode($teamList, JSON_PRETTY_PRINT);
+                } else {
+                    http_response_code(404);
+                    echo json_encode(["error" => "No teams found"], JSON_PRETTY_PRINT);
+                }
+            }
             break;
         case "POST":
             $data = (array)json_decode(file_get_contents("php://input"), true);
