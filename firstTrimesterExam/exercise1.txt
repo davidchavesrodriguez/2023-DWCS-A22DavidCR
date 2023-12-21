@@ -1,0 +1,5 @@
+1- Correct. You can use the $this keyword when accessing the static method from a child class. You could also access by using ::
+
+2- False. An abstract class needs at least one abstract method to be considered abstract but no all of its properties and methods
+
+3- We usually use json as the data format for the response in a REST API but other formats (like HTML) can be used too

@@ -1,0 +1,73 @@
+/*HEADER*/
+nav{
+    display: flex;
+    align-items: center;
+    justify-content: center;    
+    background-color: lightblue;
+    height: 50px;
+    margin-top: 0;
+}
+
+
+/*FOOTER*/
+footer{
+    background-color: lightblue;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+}
+
+footer ul{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 2%;
+    list-style: none;
+}
+
+/*MAIN*/
+#postDiv{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+}
+
+.post{
+    background-color: lightgoldenrodyellow;
+    width: 20%;
+    padding: 1%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+a, 
+a:visited,
+a:enabled{
+    border: 1px solid blue;   
+}
+
+a:hover{
+    cursor: pointer;
+}
+
+/*ADD*/
+#formDiv{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+form{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 33%;
+}
+
+input, select{
+    margin-bottom: 5%;
+}
